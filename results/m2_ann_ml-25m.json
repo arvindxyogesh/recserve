@@ -1,0 +1,252 @@
+{
+  "created_utc": "2026-10-21T05:54:54+00:00",
+  "git_commit": "6bb65ee",
+  "config_path": "configs/default.yaml",
+  "config_hash": "ff7d3590c9",
+  "seed": 42,
+  "hardware": {
+    "cpu": "Apple M4",
+    "cpu_count": 10,
+    "ram_gb": 17.2,
+    "os": "Darwin 25.5.0",
+    "python": "3.11.17"
+  },
+  "n_items": 62423,
+  "dim": 64,
+  "n_eval_users": 4727,
+  "n_latency_queries": 2000,
+  "users_with_truncated_search": 156,
+  "faiss": "1.15.1",
+  "ann_config": {
+    "k": 100,
+    "hnsw_m": [
+      16,
+      32
+    ],
+    "ef_construction": 200,
+    "ef_search": [
+      32,
+      64,
+      128,
+      256
+    ],
+    "latency_queries": 2000,
+    "threads": 1
+  },
+  "results": [
+    {
+      "index": "flat (exact)",
+      "build_s": 0.002,
+      "index_mb": 15.98,
+      "latency_ms": {
+        "p50": 0.2502,
+        "p95": 0.2672,
+        "p99": 0.2837,
+        "mean": 0.2518
+      },
+      "overlap_with_exact": 1.0,
+      "recall@100_test": 0.28356530699658133
+    },
+    {
+      "index": "hnsw M=16 efSearch=32",
+      "m": 16,
+      "ef_search": 32,
+      "ef_construction": 200,
+      "build_s": 3.571,
+      "index_mb": 24.99,
+      "latency_ms": {
+        "p50": 0.0214,
+        "p95": 0.0312,
+        "p99": 0.0379,
+        "mean": 0.0224
+      },
+      "overlap_with_exact": 0.75505,
+      "recall@100_test": 0.28395514949052486
+    },
+    {
+      "index": "hnsw M=16 efSearch=64",
+      "m": 16,
+      "ef_search": 64,
+      "ef_construction": 200,
+      "build_s": 3.571,
+      "index_mb": 24.99,
+      "latency_ms": {
+        "p50": 0.0313,
+        "p95": 0.0414,
+        "p99": 0.0483,
+        "mean": 0.0322
+      },
+      "overlap_with_exact": 0.89898,
+      "recall@100_test": 0.28395514949052486
+    },
+    {
+      "index": "hnsw M=16 efSearch=128",
+      "m": 16,
+      "ef_search": 128,
+      "ef_construction": 200,
+      "build_s": 3.571,
+      "index_mb": 24.99,
+      "latency_ms": {
+        "p50": 0.0498,
+        "p95": 0.0618,
+        "p99": 0.072,
+        "mean": 0.0511
+      },
+      "overlap_with_exact": 0.9785700000000002,
+      "recall@100_test": 0.28393844004311575
+    },
+    {
+      "index": "hnsw M=16 efSearch=256",
+      "m": 16,
+      "ef_search": 256,
+      "ef_construction": 200,
+      "build_s": 3.571,
+      "index_mb": 24.99,
+      "latency_ms": {
+        "p50": 0.1032,
+        "p95": 0.12,
+        "p99": 0.1305,
+        "mean": 0.1046
+      },
+      "overlap_with_exact": 0.99778,
+      "recall@100_test": 0.2837511357491565
+    },
+    {
+      "index": "hnsw M=32 efSearch=32",
+      "m": 32,
+      "ef_search": 32,
+      "ef_construction": 200,
+      "build_s": 3.623,
+      "index_mb": 32.97,
+      "latency_ms": {
+        "p50": 0.0223,
+        "p95": 0.0316,
+        "p99": 0.04,
+        "mean": 0.0232
+      },
+      "overlap_with_exact": 0.756725,
+      "recall@100_test": 0.28402753525476665
+    },
+    {
+      "index": "hnsw M=32 efSearch=64",
+      "m": 32,
+      "ef_search": 64,
+      "ef_construction": 200,
+      "build_s": 3.623,
+      "index_mb": 32.97,
+      "latency_ms": {
+        "p50": 0.0325,
+        "p95": 0.0429,
+        "p99": 0.051,
+        "mean": 0.0336
+      },
+      "overlap_with_exact": 0.900515,
+      "recall@100_test": 0.28402753525476665
+    },
+    {
+      "index": "hnsw M=32 efSearch=128",
+      "m": 32,
+      "ef_search": 128,
+      "ef_construction": 200,
+      "build_s": 3.623,
+      "index_mb": 32.97,
+      "latency_ms": {
+        "p50": 0.0514,
+        "p95": 0.0642,
+        "p99": 0.0757,
+        "mean": 0.0527
+      },
+      "overlap_with_exact": 0.98103,
+      "recall@100_test": 0.2840653916898039
+    },
+    {
+      "index": "hnsw M=32 efSearch=256",
+      "m": 32,
+      "ef_search": 256,
+      "ef_construction": 200,
+      "build_s": 3.623,
+      "index_mb": 32.97,
+      "latency_ms": {
+        "p50": 0.1063,
+        "p95": 0.1231,
+        "p99": 0.1391,
+        "mean": 0.1076
+      },
+      "overlap_with_exact": 0.998405,
+      "recall@100_test": 0.283688398154534
+    }
+  ],
+  "config": {
+    "seed": 42,
+    "paths": {
+      "raw_dir": "data/raw",
+      "processed_dir": "data/processed",
+      "split_dir": "data/split",
+      "results_dir": "results",
+      "artifacts_dir": "artifacts"
+    },
+    "data": {
+      "dataset": "ml-25m",
+      "url": "https://files.grouplens.org/datasets/movielens/ml-25m.zip",
+      "md5_url": "https://files.grouplens.org/datasets/movielens/ml-25m.zip.md5",
+      "keep_raw": false,
+      "positive_threshold": 4.0,
+      "sample_users": null
+    },
+    "split": {
+      "val_quantile": 0.9,
+      "test_quantile": 0.95
+    },
+    "eval": {
+      "retrieval_ks": [
+        50,
+        100,
+        200
+      ],
+      "ranking_k": 10,
+      "max_eval_users": null,
+      "batch_size": 2048
+    },
+    "baselines": {
+      "popularity_recent_days": 90,
+      "cooccurrence": {
+        "max_history": 200,
+        "top_neighbors": 200,
+        "shrinkage": 10.0,
+        "min_item_positives": 5
+      }
+    },
+    "two_tower": {
+      "emb_dim": 64,
+      "hidden": 256,
+      "dropout": 0.1,
+      "history_len": 50,
+      "batch_size": 4096,
+      "epochs": 5,
+      "lr": 0.001,
+      "weight_decay": 0.0,
+      "temperature": 0.05,
+      "logq_correction": true,
+      "use_genome": true,
+      "device": "auto",
+      "eval_users_per_epoch": 3000,
+      "benchmark_steps": null
+    },
+    "ann": {
+      "k": 100,
+      "hnsw_m": [
+        16,
+        32
+      ],
+      "ef_construction": 200,
+      "ef_search": [
+        32,
+        64,
+        128,
+        256
+      ],
+      "latency_queries": 2000,
+      "threads": 1
+    }
+  }
+}

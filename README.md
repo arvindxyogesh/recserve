@@ -7,7 +7,7 @@ MovieLens 25M, with a 50 ms p99 latency budget. Work in progress; the full READM
 ## Status
 
 - [x] M1: data pipeline, temporal split, baselines, evaluation harness
-- [ ] M2: two-tower retrieval and FAISS HNSW index
+- [x] M2: two-tower retrieval and FAISS HNSW index
 - [ ] M3: LightGBM LambdaRank ranker
 - [ ] M4: FastAPI serving with Redis and Prometheus
 - [ ] M5: load test and optimisation
@@ -22,6 +22,9 @@ make install
 make data        # downloads ml-25m.zip (262 MB), verifies MD5, writes Parquet (154 MB)
 make split       # global temporal split
 make baselines   # M1 results -> results/m1_baselines_ml-25m.{json,md}
+pip install -e ".[train]"
+make two-tower   # M2: train (cuda > mps > cpu), evaluate, export embeddings to artifacts/
+make ann         # M2: HNSW vs exact search -> results/m2_ann_ml-25m.{json,md}
 make test        # unit tests + end-to-end smoke test on synthetic data
 ```
 
