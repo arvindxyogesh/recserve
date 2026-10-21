@@ -1,0 +1,187 @@
+{
+  "created_utc": "2026-10-21T05:52:37+00:00",
+  "git_commit": "6724bc9",
+  "config_path": "configs/default.yaml",
+  "config_hash": "b3aecaff29",
+  "seed": 42,
+  "hardware": {
+    "cpu": "Apple M4",
+    "cpu_count": 10,
+    "ram_gb": 17.2,
+    "os": "Darwin 25.5.0",
+    "python": "3.11.17"
+  },
+  "device": "mps",
+  "torch": "2.14.1",
+  "two_tower_config": {
+    "emb_dim": 64,
+    "hidden": 256,
+    "dropout": 0.1,
+    "history_len": 50,
+    "batch_size": 4096,
+    "epochs": 5,
+    "lr": 0.001,
+    "weight_decay": 0.0,
+    "temperature": 0.05,
+    "logq_correction": true,
+    "use_genome": true,
+    "device": "mps",
+    "eval_users_per_epoch": 3000,
+    "benchmark_steps": null
+  },
+  "n_params": 4165232,
+  "best_epoch_on_val": 4,
+  "val": {
+    "curve": [
+      {
+        "epoch": 1,
+        "loss": 7.223620146568154,
+        "steps": 2701,
+        "epoch_s": 133.02,
+        "steps_per_s": 20.31,
+        "sample_eval": {
+          "recall@50": 0.16689590675073793,
+          "recall@100": 0.2546356964074267,
+          "recall@200": 0.3667728763051559,
+          "recall@10": 0.05047161593906342,
+          "ndcg@10": 0.10215385083098014,
+          "mrr@10": 0.2026732804232804,
+          "hitrate@10": 0.43733333333333335
+        }
+      },
+      {
+        "epoch": 2,
+        "loss": 6.990777603390922,
+        "steps": 2701,
+        "epoch_s": 132.66,
+        "steps_per_s": 20.36,
+        "sample_eval": {
+          "recall@50": 0.1797765151642573,
+          "recall@100": 0.2733492965514923,
+          "recall@200": 0.3895228916402502,
+          "recall@10": 0.058151204337151485,
+          "ndcg@10": 0.11017383980545552,
+          "mrr@10": 0.21923571428571426,
+          "hitrate@10": 0.4726666666666667
+        }
+      },
+      {
+        "epoch": 3,
+        "loss": 6.932130920405919,
+        "steps": 2701,
+        "epoch_s": 134.06,
+        "steps_per_s": 20.15,
+        "sample_eval": {
+          "recall@50": 0.17959670577831094,
+          "recall@100": 0.27058751737050996,
+          "recall@200": 0.39074096425133603,
+          "recall@10": 0.057073425392515996,
+          "ndcg@10": 0.1062788962040742,
+          "mrr@10": 0.2165824074074074,
+          "hitrate@10": 0.4603333333333333
+        }
+      },
+      {
+        "epoch": 4,
+        "loss": 6.899385176160432,
+        "steps": 2701,
+        "epoch_s": 139.84,
+        "steps_per_s": 19.31,
+        "sample_eval": {
+          "recall@50": 0.1887247410077824,
+          "recall@100": 0.27908618846156963,
+          "recall@200": 0.39473769761542893,
+          "recall@10": 0.05986949615650031,
+          "ndcg@10": 0.11148542710129797,
+          "mrr@10": 0.22214986772486775,
+          "hitrate@10": 0.4713333333333333
+        }
+      },
+      {
+        "epoch": 5,
+        "loss": 6.877271725662723,
+        "steps": 2701,
+        "epoch_s": 142.46,
+        "steps_per_s": 18.96,
+        "sample_eval": {
+          "recall@50": 0.18212669140896817,
+          "recall@100": 0.27383309644215925,
+          "recall@200": 0.39225523507021476,
+          "recall@10": 0.05374760670094163,
+          "ndcg@10": 0.10469029938878943,
+          "mrr@10": 0.20859470899470897,
+          "hitrate@10": 0.45366666666666666
+        }
+      }
+    ],
+    "train_s": 714.7,
+    "result": {
+      "model": "two_tower",
+      "period": "val",
+      "n_users": 5449,
+      "mean_relevant_per_user": 23.504679757753717,
+      "metrics": {
+        "recall@50": 0.18156369534113698,
+        "recall@100": 0.27140845199981556,
+        "recall@200": 0.38821732089132027,
+        "recall@10": 0.05875157013857245,
+        "ndcg@10": 0.11213660595390136,
+        "mrr@10": 0.22302199034627004,
+        "hitrate@10": 0.4703615342264636
+      },
+      "fit_s": 3.409,
+      "score_ms_per_user": 0.5576
+    }
+  },
+  "test": {
+    "curve": [
+      {
+        "epoch": 1,
+        "loss": 7.217611522005315,
+        "steps": 2850,
+        "epoch_s": 151.69,
+        "steps_per_s": 18.79
+      },
+      {
+        "epoch": 2,
+        "loss": 6.9844582221382545,
+        "steps": 2850,
+        "epoch_s": 157.53,
+        "steps_per_s": 18.09
+      },
+      {
+        "epoch": 3,
+        "loss": 6.9254309744583935,
+        "steps": 2850,
+        "epoch_s": 158.26,
+        "steps_per_s": 18.01
+      },
+      {
+        "epoch": 4,
+        "loss": 6.892426373163859,
+        "steps": 2850,
+        "epoch_s": 159.7,
+        "steps_per_s": 17.85
+      }
+    ],
+    "train_s": 632.8,
+    "result": {
+      "model": "two_tower",
+      "period": "test",
+      "n_users": 4727,
+      "mean_relevant_per_user": 23.33890416754813,
+      "metrics": {
+        "recall@50": 0.18850800176413943,
+        "recall@100": 0.28356530699658133,
+        "recall@200": 0.4009253459339991,
+        "recall@10": 0.062364166019249295,
+        "ndcg@10": 0.11553685124633187,
+        "mrr@10": 0.2225097464414156,
+        "hitrate@10": 0.46668077004442565
+      },
+      "fit_s": 4.861,
+      "score_ms_per_user": 0.5704
+    }
+  },
+  "artifacts_dir": "artifacts/two_tower/ml-25m"
+}

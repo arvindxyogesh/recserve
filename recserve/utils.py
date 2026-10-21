@@ -94,6 +94,7 @@ def write_result(path: str | Path, payload: dict[str, Any], cfg: dict[str, Any])
         "seed": cfg.get("seed"),
         "hardware": hardware_info(),
         **payload,
+        "config": {k: v for k, v in cfg.items() if not k.startswith("_")},
     }
     path.write_text(json.dumps(record, indent=2, default=_json_default) + "\n")
     log.info("wrote %s", path)

@@ -45,15 +45,18 @@ class TwoTower(nn.Module):
             self.item_id.weight[self.pad].zero_()
 
         pad_row = lambda a: np.concatenate([a, np.zeros((1, *a.shape[1:]), a.dtype)])  # noqa: E731
-        self.register_buffer("genres", torch.from_numpy(pad_row(feats.genres)))
-        self.register_buffer("year", torch.from_numpy(pad_row(feats.year_bucket)))
-        self.register_buffer("has_genome", torch.from_numpy(pad_row(feats.has_genome))[:, None])
+        # Feature tables are inputs rebuilt from data/, not weights: keep them out of
+        # the checkpoint (the genome table alone is ~280 MB).
+        buf = lambda name, a: self.register_buffer(name, torch.from_numpy(a), persistent=False)  # noqa: E731
+        buf("genres", pad_row(feats.genres))
+        buf("year", pad_row(feats.year_bucket))
+        buf("has_genome", pad_row(feats.has_genome)[:, None])
         n_genres = feats.genres.shape[1]
         self.year_emb = nn.Embedding(feats.n_year_buckets, 16)
         self.use_genome = feats.genome is not None
         genome_dim = 0
         if self.use_genome:
-            self.register_buffer("genome", torch.from_numpy(pad_row(feats.genome)))
+            buf("genome", pad_row(feats.genome))
             self.genome_proj = nn.Linear(feats.genome.shape[1], emb_dim)
             genome_dim = emb_dim + 1
 
