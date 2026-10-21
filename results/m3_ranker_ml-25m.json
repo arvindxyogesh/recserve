@@ -1,0 +1,317 @@
+{
+  "created_utc": "2026-10-21T06:33:27+00:00",
+  "git_commit": "7bb64d4",
+  "config_path": "configs/default.yaml",
+  "config_hash": "737b51371d",
+  "seed": 42,
+  "hardware": {
+    "cpu": "Apple M4",
+    "cpu_count": 10,
+    "ram_gb": 17.2,
+    "os": "Darwin 25.5.0",
+    "python": "3.11.17"
+  },
+  "candidates_per_user": 100,
+  "ranker_train_users": 3516,
+  "ranker_early_stopping_users": 899,
+  "val_candidate_positive_rate": 0.051983851939439774,
+  "best_iteration": 115,
+  "lightgbm": "4.7.0",
+  "results": [
+    {
+      "model": "two_tower (retrieval order)",
+      "n_users": 4727,
+      "metrics": {
+        "recall@10": 0.06085028102603934,
+        "recall@50": 0.1894458954340329,
+        "recall@100": 0.2822825209640312,
+        "ndcg@10": 0.11426049292959034,
+        "mrr@10": 0.22156406459347017,
+        "hitrate@10": 0.46498836471334887
+      }
+    },
+    {
+      "model": "two_tower + popularity_90d rerank",
+      "n_users": 4727,
+      "metrics": {
+        "recall@10": 0.06152835287270641,
+        "recall@50": 0.1859083843749845,
+        "recall@100": 0.2822825209640312,
+        "ndcg@10": 0.1085804171428111,
+        "mrr@10": 0.2052917888119919,
+        "hitrate@10": 0.44362174740850435
+      }
+    },
+    {
+      "model": "two_tower + lambdarank",
+      "n_users": 4727,
+      "metrics": {
+        "recall@10": 0.08110576236077066,
+        "recall@50": 0.20480475778512008,
+        "recall@100": 0.2822825209640312,
+        "ndcg@10": 0.1435888179758574,
+        "mrr@10": 0.2798673443003885,
+        "hitrate@10": 0.5248572033001904
+      }
+    },
+    {
+      "model": "popularity_90d (full catalogue, M1)",
+      "n_users": 4727,
+      "metrics": {
+        "recall@50": 0.1461285369103425,
+        "recall@100": 0.22162905107211694,
+        "recall@200": 0.32052159998386304,
+        "recall@10": 0.0484951253845509,
+        "ndcg@10": 0.09153267519555555,
+        "mrr@10": 0.18073176382886558,
+        "hitrate@10": 0.36217474085043366
+      }
+    },
+    {
+      "model": "cooccurrence (full catalogue, M1)",
+      "n_users": 4727,
+      "metrics": {
+        "recall@50": 0.12447946569642727,
+        "recall@100": 0.19109808042891266,
+        "recall@200": 0.28257893138984785,
+        "recall@10": 0.04222390701966981,
+        "ndcg@10": 0.09189273219509286,
+        "mrr@10": 0.1844303746461563,
+        "hitrate@10": 0.3503279035328961
+      }
+    }
+  ],
+  "lifts": {
+    "ndcg@10 vs retrieval order": {
+      "diff": 0.029328325046267062,
+      "diff_ci": [
+        0.02474215130702129,
+        0.03393492893691221
+      ],
+      "lift": 0.25667948994706147,
+      "lift_ci": [
+        0.21254068527356895,
+        0.30373346197854273
+      ]
+    },
+    "ndcg@10 vs popularity_90d rerank": {
+      "diff": 0.03500840083304631,
+      "diff_ci": [
+        0.030568236340065544,
+        0.03908292513662288
+      ],
+      "lift": 0.32241910423867015,
+      "lift_ci": [
+        0.27639466952846703,
+        0.3678654837523652
+      ]
+    },
+    "ndcg@10 vs popularity_90d full catalogue (point estimate)": {
+      "lift": 0.5687165011738833
+    }
+  },
+  "feature_importance": [
+    {
+      "feature": "genome_sim",
+      "gain_share": 0.16619523933522867,
+      "splits": 369
+    },
+    {
+      "feature": "i_pop_7d",
+      "gain_share": 0.14013157277843938,
+      "splits": 154
+    },
+    {
+      "feature": "retrieval_rank",
+      "gain_share": 0.09598026242255335,
+      "splits": 304
+    },
+    {
+      "feature": "i_year",
+      "gain_share": 0.09186109661106234,
+      "splits": 155
+    },
+    {
+      "feature": "i_days_since_first",
+      "gain_share": 0.08215072120072597,
+      "splits": 220
+    },
+    {
+      "feature": "i_pop_90d",
+      "gain_share": 0.08119454492579721,
+      "splits": 237
+    },
+    {
+      "feature": "i_mean_rating",
+      "gain_share": 0.04923328853127944,
+      "splits": 221
+    },
+    {
+      "feature": "u_days_since_last",
+      "gain_share": 0.0468094592158978,
+      "splits": 245
+    },
+    {
+      "feature": "i_n_ratings",
+      "gain_share": 0.033782251390795506,
+      "splits": 123
+    },
+    {
+      "feature": "genre_affinity",
+      "gain_share": 0.03376189557236468,
+      "splits": 225
+    },
+    {
+      "feature": "u_days_active",
+      "gain_share": 0.03282102792301287,
+      "splits": 191
+    },
+    {
+      "feature": "u_n_pos",
+      "gain_share": 0.026046590368821003,
+      "splits": 170
+    },
+    {
+      "feature": "year_gap",
+      "gain_share": 0.023719876171589212,
+      "splits": 186
+    },
+    {
+      "feature": "retrieval_score",
+      "gain_share": 0.023712767957380844,
+      "splits": 175
+    },
+    {
+      "feature": "i_n_pos",
+      "gain_share": 0.02219063479111455,
+      "splits": 98
+    },
+    {
+      "feature": "u_n_ratings",
+      "gain_share": 0.020627737070906156,
+      "splits": 130
+    },
+    {
+      "feature": "u_pos_rate",
+      "gain_share": 0.015065006780055762,
+      "splits": 126
+    },
+    {
+      "feature": "u_mean_rating",
+      "gain_share": 0.014716026952975279,
+      "splits": 121
+    },
+    {
+      "feature": "i_has_genome",
+      "gain_share": 0.0,
+      "splits": 0
+    }
+  ],
+  "predict_latency_ms_per_request": {
+    "p50": 0.333,
+    "p95": 0.3687,
+    "p99": 0.394
+  },
+  "timings_s": {
+    "features val": 7.302,
+    "features test": 8.094,
+    "train ranker": 2.19
+  },
+  "config": {
+    "seed": 42,
+    "paths": {
+      "raw_dir": "data/raw",
+      "processed_dir": "data/processed",
+      "split_dir": "data/split",
+      "results_dir": "results",
+      "artifacts_dir": "artifacts"
+    },
+    "data": {
+      "dataset": "ml-25m",
+      "url": "https://files.grouplens.org/datasets/movielens/ml-25m.zip",
+      "md5_url": "https://files.grouplens.org/datasets/movielens/ml-25m.zip.md5",
+      "keep_raw": false,
+      "positive_threshold": 4.0,
+      "sample_users": null
+    },
+    "split": {
+      "val_quantile": 0.9,
+      "test_quantile": 0.95
+    },
+    "eval": {
+      "retrieval_ks": [
+        50,
+        100,
+        200
+      ],
+      "ranking_k": 10,
+      "max_eval_users": null,
+      "batch_size": 2048
+    },
+    "baselines": {
+      "popularity_recent_days": 90,
+      "cooccurrence": {
+        "max_history": 200,
+        "top_neighbors": 200,
+        "shrinkage": 10.0,
+        "min_item_positives": 5
+      }
+    },
+    "two_tower": {
+      "emb_dim": 64,
+      "hidden": 256,
+      "dropout": 0.1,
+      "history_len": 50,
+      "batch_size": 4096,
+      "epochs": 5,
+      "lr": 0.001,
+      "weight_decay": 0.0,
+      "temperature": 0.05,
+      "logq_correction": true,
+      "use_genome": true,
+      "device": "auto",
+      "eval_users_per_epoch": 3000,
+      "benchmark_steps": null
+    },
+    "ann": {
+      "k": 100,
+      "hnsw_m": [
+        16,
+        32
+      ],
+      "ef_construction": 200,
+      "ef_search": [
+        32,
+        64,
+        128,
+        256
+      ],
+      "latency_queries": 2000,
+      "threads": 1
+    },
+    "ranker": {
+      "candidates": 100,
+      "history_len": 50,
+      "valid_frac": 0.2,
+      "num_boost_round": 2000,
+      "early_stopping_rounds": 100,
+      "params": {
+        "objective": "lambdarank",
+        "metric": "ndcg",
+        "eval_at": [
+          10
+        ],
+        "lambdarank_truncation_level": 20,
+        "learning_rate": 0.05,
+        "num_leaves": 31,
+        "min_data_in_leaf": 50,
+        "feature_fraction": 0.8,
+        "bagging_fraction": 0.8,
+        "bagging_freq": 1,
+        "deterministic": true,
+        "force_row_wise": true,
+        "verbose": -1
+      }
+    }
+  }
+}

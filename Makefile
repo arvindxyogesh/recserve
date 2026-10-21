@@ -1,7 +1,7 @@
 CONFIG ?= configs/default.yaml
 PY ?= python
 
-.PHONY: install data split baselines cold-users two-tower ann smoke test lint format
+.PHONY: install data split baselines cold-users two-tower ann ranker smoke test lint format
 
 install:
 	$(PY) -m pip install -e ".[dev]"
@@ -20,6 +20,9 @@ ann:  ## M2: HNSW vs exact search benchmark (run on the serving machine)
 
 two-tower:  ## M2: train, evaluate and export the two-tower model
 	$(PY) -m recserve.retrieval.train_two_tower --config $(CONFIG)
+
+ranker:  ## M3: LightGBM LambdaRank over two-tower candidates
+	$(PY) -m recserve.ranking.train_ranker --config $(CONFIG)
 
 smoke:  ## whole pipeline on synthetic data
 	$(PY) -m pytest -q -m smoke
