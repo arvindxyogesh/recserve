@@ -1,8 +1,8 @@
 {
-  "created_utc": "2026-10-21T05:54:54+00:00",
-  "git_commit": "6bb65ee",
+  "created_utc": "2026-10-21T06:25:04+00:00",
+  "git_commit": "b0511da",
   "config_path": "configs/default.yaml",
-  "config_hash": "ff7d3590c9",
+  "config_hash": "737b51371d",
   "seed": 42,
   "hardware": {
     "cpu": "Apple M4",
@@ -39,141 +39,141 @@
       "build_s": 0.002,
       "index_mb": 15.98,
       "latency_ms": {
-        "p50": 0.2502,
-        "p95": 0.2672,
-        "p99": 0.2837,
-        "mean": 0.2518
+        "p50": 0.2504,
+        "p95": 0.266,
+        "p99": 0.2803,
+        "mean": 0.2517
       },
       "overlap_with_exact": 1.0,
-      "recall@100_test": 0.28356530699658133
+      "recall@100_test": 0.2822825209640312
     },
     {
       "index": "hnsw M=16 efSearch=32",
       "m": 16,
       "ef_search": 32,
       "ef_construction": 200,
-      "build_s": 3.571,
+      "build_s": 3.682,
       "index_mb": 24.99,
       "latency_ms": {
-        "p50": 0.0214,
-        "p95": 0.0312,
-        "p99": 0.0379,
-        "mean": 0.0224
+        "p50": 0.0207,
+        "p95": 0.0285,
+        "p99": 0.036,
+        "mean": 0.0215
       },
-      "overlap_with_exact": 0.75505,
-      "recall@100_test": 0.28395514949052486
+      "overlap_with_exact": 0.748185,
+      "recall@100_test": 0.28240928406646704
     },
     {
       "index": "hnsw M=16 efSearch=64",
       "m": 16,
       "ef_search": 64,
       "ef_construction": 200,
-      "build_s": 3.571,
+      "build_s": 3.682,
       "index_mb": 24.99,
       "latency_ms": {
-        "p50": 0.0313,
-        "p95": 0.0414,
-        "p99": 0.0483,
-        "mean": 0.0322
+        "p50": 0.0305,
+        "p95": 0.0413,
+        "p99": 0.0525,
+        "mean": 0.0317
       },
-      "overlap_with_exact": 0.89898,
-      "recall@100_test": 0.28395514949052486
+      "overlap_with_exact": 0.90004,
+      "recall@100_test": 0.28240928406646704
     },
     {
       "index": "hnsw M=16 efSearch=128",
       "m": 16,
       "ef_search": 128,
       "ef_construction": 200,
-      "build_s": 3.571,
+      "build_s": 3.682,
       "index_mb": 24.99,
       "latency_ms": {
-        "p50": 0.0498,
-        "p95": 0.0618,
-        "p99": 0.072,
-        "mean": 0.0511
+        "p50": 0.0485,
+        "p95": 0.0596,
+        "p99": 0.0697,
+        "mean": 0.0496
       },
-      "overlap_with_exact": 0.9785700000000002,
-      "recall@100_test": 0.28393844004311575
+      "overlap_with_exact": 0.9793900000000001,
+      "recall@100_test": 0.28239611071004117
     },
     {
       "index": "hnsw M=16 efSearch=256",
       "m": 16,
       "ef_search": 256,
       "ef_construction": 200,
-      "build_s": 3.571,
+      "build_s": 3.682,
       "index_mb": 24.99,
       "latency_ms": {
-        "p50": 0.1032,
-        "p95": 0.12,
-        "p99": 0.1305,
-        "mean": 0.1046
+        "p50": 0.1035,
+        "p95": 0.1194,
+        "p99": 0.1352,
+        "mean": 0.1048
       },
-      "overlap_with_exact": 0.99778,
-      "recall@100_test": 0.2837511357491565
+      "overlap_with_exact": 0.99787,
+      "recall@100_test": 0.28218872286127855
     },
     {
       "index": "hnsw M=32 efSearch=32",
       "m": 32,
       "ef_search": 32,
       "ef_construction": 200,
-      "build_s": 3.623,
+      "build_s": 3.67,
       "index_mb": 32.97,
       "latency_ms": {
-        "p50": 0.0223,
-        "p95": 0.0316,
-        "p99": 0.04,
-        "mean": 0.0232
+        "p50": 0.0219,
+        "p95": 0.0307,
+        "p99": 0.0362,
+        "mean": 0.0227
       },
-      "overlap_with_exact": 0.756725,
-      "recall@100_test": 0.28402753525476665
+      "overlap_with_exact": 0.752965,
+      "recall@100_test": 0.2824837753457649
     },
     {
       "index": "hnsw M=32 efSearch=64",
       "m": 32,
       "ef_search": 64,
       "ef_construction": 200,
-      "build_s": 3.623,
+      "build_s": 3.67,
       "index_mb": 32.97,
       "latency_ms": {
-        "p50": 0.0325,
-        "p95": 0.0429,
-        "p99": 0.051,
-        "mean": 0.0336
+        "p50": 0.0327,
+        "p95": 0.0434,
+        "p99": 0.0504,
+        "mean": 0.0337
       },
-      "overlap_with_exact": 0.900515,
-      "recall@100_test": 0.28402753525476665
+      "overlap_with_exact": 0.9009649999999999,
+      "recall@100_test": 0.2824837753457649
     },
     {
       "index": "hnsw M=32 efSearch=128",
       "m": 32,
       "ef_search": 128,
       "ef_construction": 200,
-      "build_s": 3.623,
+      "build_s": 3.67,
       "index_mb": 32.97,
       "latency_ms": {
-        "p50": 0.0514,
-        "p95": 0.0642,
-        "p99": 0.0757,
-        "mean": 0.0527
+        "p50": 0.051,
+        "p95": 0.0626,
+        "p99": 0.0726,
+        "mean": 0.052
       },
-      "overlap_with_exact": 0.98103,
-      "recall@100_test": 0.2840653916898039
+      "overlap_with_exact": 0.9808500000000001,
+      "recall@100_test": 0.28245403036604316
     },
     {
       "index": "hnsw M=32 efSearch=256",
       "m": 32,
       "ef_search": 256,
       "ef_construction": 200,
-      "build_s": 3.623,
+      "build_s": 3.67,
       "index_mb": 32.97,
       "latency_ms": {
-        "p50": 0.1063,
-        "p95": 0.1231,
-        "p99": 0.1391,
-        "mean": 0.1076
+        "p50": 0.1079,
+        "p95": 0.1273,
+        "p99": 0.1439,
+        "mean": 0.1098
       },
-      "overlap_with_exact": 0.998405,
-      "recall@100_test": 0.283688398154534
+      "overlap_with_exact": 0.9979950000000001,
+      "recall@100_test": 0.2823205319611424
     }
   ],
   "config": {
@@ -247,6 +247,30 @@
       ],
       "latency_queries": 2000,
       "threads": 1
+    },
+    "ranker": {
+      "candidates": 100,
+      "history_len": 50,
+      "valid_frac": 0.2,
+      "num_boost_round": 2000,
+      "early_stopping_rounds": 100,
+      "params": {
+        "objective": "lambdarank",
+        "metric": "ndcg",
+        "eval_at": [
+          10
+        ],
+        "lambdarank_truncation_level": 20,
+        "learning_rate": 0.05,
+        "num_leaves": 31,
+        "min_data_in_leaf": 50,
+        "feature_fraction": 0.8,
+        "bagging_fraction": 0.8,
+        "bagging_freq": 1,
+        "deterministic": true,
+        "force_row_wise": true,
+        "verbose": -1
+      }
     }
   }
 }
