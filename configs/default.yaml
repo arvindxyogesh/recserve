@@ -1,0 +1,36 @@
+# Full MovieLens 25M run. Every script takes --config; all randomness is seeded from `seed`.
+seed: 42
+
+paths:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  split_dir: data/split
+  results_dir: results
+
+data:
+  dataset: ml-25m
+  url: https://files.grouplens.org/datasets/movielens/ml-25m.zip
+  md5_url: https://files.grouplens.org/datasets/movielens/ml-25m.zip.md5
+  keep_raw: false            # delete the zip after Parquet conversion (CSVs are never extracted)
+  positive_threshold: 4.0    # rating >= 4.0 is a positive interaction
+  sample_users: null         # int to subsample users for quick dev runs
+
+split:
+  # Global temporal split: cutoffs are quantiles of the timestamp of ALL ratings.
+  # train: ts < t_val, val: t_val <= ts < t_test, test: ts >= t_test
+  val_quantile: 0.90
+  test_quantile: 0.95
+
+eval:
+  retrieval_ks: [50, 100, 200]
+  ranking_k: 10
+  max_eval_users: null       # int to subsample evaluation users (seeded)
+  batch_size: 2048
+
+baselines:
+  popularity_recent_days: 90  # window (before the split cutoff) for recent popularity
+  cooccurrence:
+    max_history: 200          # most recent positives per user used to build co-occurrence
+    top_neighbors: 200        # neighbours kept per item
+    shrinkage: 10.0           # cosine shrinkage for rarely co-occurring pairs
+    min_item_positives: 5     # items with fewer train positives get no neighbour list
