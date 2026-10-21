@@ -2,7 +2,7 @@ CONFIG ?= configs/default.yaml
 GIT_COMMIT := $(shell git rev-parse --short HEAD 2>/dev/null)
 PY ?= python
 
-.PHONY: install data split baselines cold-users two-tower ann ranker serving-artifacts up down probe load-test summarize-m5 load-test-host serving-quality ab-test test-serving smoke test lint format
+.PHONY: install data split baselines cold-users two-tower ann ranker serving-artifacts up down probe load-test summarize-m5 load-test-host serving-quality ab-test diag-parity diag-redis report test-serving smoke test lint format
 
 install:
 	$(PY) -m pip install -e ".[dev]"
@@ -75,6 +75,18 @@ ab-test:  ## M6: simulated A/B test (popularity vs two-stage) in the serving con
 		--entrypoint python api -m recserve.experiments.ab_simulation \
 		--set paths.split_dir=/data/split --set paths.artifacts_dir=/artifacts \
 		--set paths.results_dir=/results $(ARGS)
+
+diag-parity:  ## numpy user tower vs torch embeddings
+	$(PY) -m recserve.experiments.diagnostics parity --config $(CONFIG)
+
+diag-redis:  ## async Redis client latency, from the API container (stack must be up)
+	docker compose build api
+	docker compose run --rm --no-deps -e RECSERVE_GIT_COMMIT=$(GIT_COMMIT) \
+		-v "$(CURDIR)/results:/results" --entrypoint python api \
+		-m recserve.experiments.diagnostics redis --set paths.results_dir=/results
+
+report:  ## headline results table from results/*.json
+	$(PY) -m recserve.experiments.report --config $(CONFIG)
 
 test-serving:  ## serving tests inside the Linux container (needed on macOS); rebuilds the image first
 	docker compose build api
