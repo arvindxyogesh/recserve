@@ -1,0 +1,166 @@
+{
+  "created_utc": "2026-10-21T16:31:52+00:00",
+  "git_commit": "f38dcf3",
+  "config_path": "configs/default.yaml",
+  "config_hash": "94b80b6ef2",
+  "seed": 42,
+  "hardware": {
+    "cpu": "Apple M4",
+    "cpu_count": 10,
+    "ram_gb": 17.2,
+    "os": "Darwin 25.5.0",
+    "python": "3.11.17"
+  },
+  "note": "sequential single-client requests; server-side stage timings in ms",
+  "url": "http://localhost:8000",
+  "requests": 1000,
+  "sources": {
+    "two_stage": 969,
+    "cold_start_global": 31
+  },
+  "two_stage_latency_ms": {
+    "client_rtt": {
+      "p50": 1.732,
+      "p95": 2.726,
+      "p99": 5.617
+    },
+    "feature_fetch": {
+      "p50": 0.106,
+      "p95": 0.171,
+      "p99": 0.428
+    },
+    "retrieval": {
+      "p50": 0.185,
+      "p95": 0.735,
+      "p99": 2.947
+    },
+    "ranking": {
+      "p50": 0.429,
+      "p95": 0.619,
+      "p99": 1.179
+    },
+    "total": {
+      "p50": 0.732,
+      "p95": 1.581,
+      "p99": 4.43
+    }
+  },
+  "server": {
+    "ready": true,
+    "models": true,
+    "redis": true,
+    "user_state": true
+  },
+  "config": {
+    "seed": 42,
+    "paths": {
+      "raw_dir": "data/raw",
+      "processed_dir": "data/processed",
+      "split_dir": "data/split",
+      "results_dir": "results",
+      "artifacts_dir": "artifacts"
+    },
+    "data": {
+      "dataset": "ml-25m",
+      "url": "https://files.grouplens.org/datasets/movielens/ml-25m.zip",
+      "md5_url": "https://files.grouplens.org/datasets/movielens/ml-25m.zip.md5",
+      "keep_raw": false,
+      "positive_threshold": 4.0,
+      "sample_users": null
+    },
+    "split": {
+      "val_quantile": 0.9,
+      "test_quantile": 0.95
+    },
+    "eval": {
+      "retrieval_ks": [
+        50,
+        100,
+        200
+      ],
+      "ranking_k": 10,
+      "max_eval_users": null,
+      "batch_size": 2048
+    },
+    "baselines": {
+      "popularity_recent_days": 90,
+      "cooccurrence": {
+        "max_history": 200,
+        "top_neighbors": 200,
+        "shrinkage": 10.0,
+        "min_item_positives": 5
+      }
+    },
+    "two_tower": {
+      "emb_dim": 64,
+      "hidden": 256,
+      "dropout": 0.1,
+      "history_len": 50,
+      "batch_size": 4096,
+      "epochs": 5,
+      "lr": 0.001,
+      "weight_decay": 0.0,
+      "temperature": 0.05,
+      "logq_correction": true,
+      "use_genome": true,
+      "device": "auto",
+      "eval_users_per_epoch": 3000,
+      "benchmark_steps": null
+    },
+    "ann": {
+      "k": 100,
+      "hnsw_m": [
+        16,
+        32
+      ],
+      "ef_construction": 200,
+      "ef_search": [
+        32,
+        64,
+        128,
+        256
+      ],
+      "latency_queries": 2000,
+      "threads": 1
+    },
+    "ranker": {
+      "candidates": 100,
+      "history_len": 50,
+      "valid_frac": 0.2,
+      "num_boost_round": 2000,
+      "early_stopping_rounds": 100,
+      "params": {
+        "objective": "lambdarank",
+        "metric": "ndcg",
+        "eval_at": [
+          10
+        ],
+        "lambdarank_truncation_level": 20,
+        "learning_rate": 0.05,
+        "num_leaves": 31,
+        "min_data_in_leaf": 50,
+        "feature_fraction": 0.8,
+        "bagging_fraction": 0.8,
+        "bagging_freq": 1,
+        "deterministic": true,
+        "force_row_wise": true,
+        "verbose": -1
+      }
+    },
+    "serving": {
+      "candidates": 100,
+      "ann_m": 16,
+      "ef_construction": 200,
+      "ef_search": 128,
+      "max_search": 2048,
+      "cold_start_pool": 500,
+      "redis_url": "redis://localhost:6379/0",
+      "max_users": null
+    },
+    "probe": {
+      "url": "http://localhost:8000",
+      "requests": 1000,
+      "k": 10
+    }
+  }
+}

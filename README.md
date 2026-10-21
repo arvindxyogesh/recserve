@@ -9,7 +9,7 @@ MovieLens 25M, with a 50 ms p99 latency budget. Work in progress; the full READM
 - [x] M1: data pipeline, temporal split, baselines, evaluation harness
 - [x] M2: two-tower retrieval and FAISS HNSW index
 - [x] M3: LightGBM LambdaRank ranker
-- [ ] M4: FastAPI serving with Redis and Prometheus
+- [x] M4: FastAPI serving with Redis and Prometheus
 - [ ] M5: load test and optimisation
 - [ ] M6: simulated A/B test
 - [ ] M7: README and results
@@ -28,6 +28,27 @@ make ann         # M2: HNSW vs exact search -> results/m2_ann_ml-25m.{json,md}
 make ranker      # M3: LambdaRank on two-tower candidates -> results/m3_ranker_ml-25m.{json,md}
 make test        # unit tests + end-to-end smoke test on synthetic data
 ```
+
+## Serving (M4)
+
+```bash
+pip install -e ".[serve]"
+make serving-artifacts   # artifacts/serving/ml-25m: HNSW index, user tower, ranker, item tables
+make up                  # redis + loader + api (4 workers) + prometheus + grafana
+curl "localhost:8000/recommend?user_id=1&k=10"
+curl "localhost:8000/recommend?user_id=999999999&k=10&genres=Comedy,Drama"   # cold start
+make probe               # sequential latency probe -> results/m4_serving_probe_ml-25m.json
+make test-serving        # API tests inside the Linux container
+```
+
+Host ports can be changed with `API_PORT`, `REDIS_PORT`, `PROMETHEUS_PORT` and
+`GRAFANA_PORT` (for example `GRAFANA_PORT=3001 make up`). Grafana serves the
+provisioned `recserve` dashboard at `/d/recserve`.
+
+On macOS the API runs only in Docker: the macOS wheels of faiss and lightgbm (and
+torch) each bundle their own OpenMP runtime, and loading two in one process aborts.
+Training, the ANN benchmark and serving therefore run in separate processes, and
+the serving tests run in CI and in the container.
 
 Every script takes `--config` and `--set key.sub=value` overrides, e.g.
 `make split CONFIG=configs/default.yaml` or
