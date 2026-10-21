@@ -1,7 +1,7 @@
 CONFIG ?= configs/default.yaml
 PY ?= python
 
-.PHONY: install data split baselines smoke test lint format
+.PHONY: install data split baselines cold-users smoke test lint format
 
 install:
 	$(PY) -m pip install -e ".[dev]"
@@ -28,3 +28,6 @@ lint:
 format:
 	ruff format .
 	ruff check --fix .
+
+cold-users:  ## M1: signup-burst analysis behind the cold-user numbers
+	$(PY) -m recserve.experiments.cold_user_analysis --config $(CONFIG)

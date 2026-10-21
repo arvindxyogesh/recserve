@@ -1,0 +1,63 @@
+{
+  "created_utc": "2026-10-21T05:13:56+00:00",
+  "git_commit": "44c62eb",
+  "config_path": "configs/default.yaml",
+  "config_hash": "837e5f319d",
+  "seed": 42,
+  "hardware": {
+    "cpu": "Apple M4",
+    "cpu_count": 10,
+    "ram_gb": 17.2,
+    "os": "Darwin 25.5.0",
+    "python": "3.11.17"
+  },
+  "split": {
+    "n_users": 162541,
+    "n_items": 62423,
+    "positive_threshold": 4.0,
+    "sample_users": null,
+    "cutoffs": {
+      "t_val": {
+        "unix": 1515033900,
+        "utc": "2018-01-04 02:45:00"
+      },
+      "t_test": {
+        "unix": 1545602470,
+        "utc": "2018-12-23 22:01:10"
+      }
+    },
+    "time_range_utc": {
+      "start": "1995-01-09 11:46:49",
+      "end": "2019-11-21 09:15:03"
+    },
+    "train": {
+      "ratings": 22500085,
+      "positives": 11212604,
+      "users": 150591,
+      "items": 45110
+    },
+    "val": {
+      "ratings": 1250003,
+      "positives": 616941,
+      "users": 11641,
+      "items": 35040,
+      "users_with_positive": 11458,
+      "warm_eval_users": 5449,
+      "cold_eval_users": 6009
+    },
+    "test": {
+      "ratings": 1250007,
+      "positives": 623266,
+      "users": 10902,
+      "items": 42041,
+      "users_with_positive": 10669,
+      "warm_eval_users": 4727,
+      "cold_eval_users": 5942
+    }
+  },
+  "timings_s": {
+    "load": 0.231,
+    "index": 11.994,
+    "split": 0.933
+  }
+}
