@@ -159,3 +159,19 @@ def test_right_align():
     assert right_align(np.array([1, 2, 3]), 5).tolist() == [[PAD, PAD, 1, 2, 3]]
     assert right_align(np.array([1, 2, 3]), 2).tolist() == [[2, 3]]
     assert right_align(np.array([], dtype=np.int64), 2).tolist() == [[PAD, PAD]]
+
+
+@pytest.mark.parametrize("mode", ["overfetch", "selector"])
+def test_filter_modes_exclude_seen(art, mode):
+    from recserve.serving.store import UserRecord
+
+    rec = TwoStageRecommender(art, filter_mode=mode)
+    record = UserRecord(np.arange(5), np.arange(0, N_ITEMS, 2), np.ones(len(USER_STATS)))
+    items, _ = rec.retrieve(record)
+    assert len(items) == 50  # candidates in the fixture's meta
+    assert not np.isin(items, record.seen).any()
+
+
+def test_bad_filter_mode(art):
+    with pytest.raises(ValueError):
+        TwoStageRecommender(art, filter_mode="nope")
