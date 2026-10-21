@@ -98,6 +98,7 @@ async def info() -> dict[str, Any]:
         "filter_mode": rec.filter_mode,
         "ef_search": rec.ef_search,
         "workers": int(os.environ.get("WEB_CONCURRENCY", "1")),
+        "cpus": sorted(os.sched_getaffinity(0)) if hasattr(os, "sched_getaffinity") else None,
     }
 
 

@@ -1,0 +1,366 @@
+{
+  "created_utc": "2026-10-21T16:47:35+00:00",
+  "git_commit": "e2557a1",
+  "config_path": "configs/default.yaml",
+  "config_hash": "05a2eecd59",
+  "seed": 42,
+  "hardware": {
+    "cpu": "Apple M4",
+    "cpu_count": 10,
+    "ram_gb": 17.2,
+    "os": "Darwin 25.5.0",
+    "python": "3.11.17"
+  },
+  "label": "baseline",
+  "server": {
+    "candidates": 100,
+    "filter_mode": "overfetch",
+    "ef_search": 128,
+    "workers": 4
+  },
+  "docker": {
+    "cpus": 10,
+    "mem_gb": 8.2,
+    "version": "28.5.1"
+  },
+  "load_test_config": {
+    "label": "baseline",
+    "host": "http://localhost:8000",
+    "prometheus": "http://localhost:9090",
+    "target_rps": [
+      50,
+      100,
+      200,
+      400,
+      600,
+      800,
+      1000,
+      1200,
+      1500,
+      2000
+    ],
+    "per_user_rps": 5,
+    "step_seconds": 45,
+    "locust_processes": 4,
+    "n_user_ids": 50000,
+    "p99_budget_ms": 50,
+    "stop_after_failures": 2,
+    "prometheus_scrape_wait_s": 6
+  },
+  "max_sustained_rps": 200,
+  "steps": [
+    {
+      "target_rps": 50,
+      "locust_users": 10,
+      "achieved_rps": 50.2,
+      "requests": 2260,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 11.0,
+        "p95": 20.0,
+        "p99": 24.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 3.823,
+          "p95": 13.478,
+          "p99": 16.724
+        },
+        "retrieval": {
+          "p50": 1.055,
+          "p95": 2.639,
+          "p99": 5.625
+        },
+        "ranking": {
+          "p50": 1.982,
+          "p95": 2.938,
+          "p99": 4.2
+        },
+        "total": {
+          "p50": 7.228,
+          "p95": 16.434,
+          "p99": 19.535
+        }
+      },
+      "sustained": true
+    },
+    {
+      "target_rps": 100,
+      "locust_users": 20,
+      "achieved_rps": 100.3,
+      "requests": 4520,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 16.0,
+        "p95": 25.0,
+        "p99": 29.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 7.302,
+          "p95": 19.456,
+          "p99": 27.632
+        },
+        "retrieval": {
+          "p50": 0.874,
+          "p95": 2.574,
+          "p99": 5.18
+        },
+        "ranking": {
+          "p50": 1.665,
+          "p95": 2.934,
+          "p99": 4.438
+        },
+        "total": {
+          "p50": 10.519,
+          "p95": 24.301,
+          "p99": 29.101
+        }
+      },
+      "sustained": true
+    },
+    {
+      "target_rps": 200,
+      "locust_users": 40,
+      "achieved_rps": 200.5,
+      "requests": 9040,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 23.0,
+        "p95": 33.0,
+        "p99": 37.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 14.688,
+          "p95": 28.41,
+          "p99": 29.839
+        },
+        "retrieval": {
+          "p50": 0.539,
+          "p95": 1.969,
+          "p99": 4.463
+        },
+        "ranking": {
+          "p50": 0.967,
+          "p95": 2.696,
+          "p99": 2.959
+        },
+        "total": {
+          "p50": 16.627,
+          "p95": 28.887,
+          "p99": 32.222
+        }
+      },
+      "sustained": true
+    },
+    {
+      "target_rps": 400,
+      "locust_users": 80,
+      "achieved_rps": 400.8,
+      "requests": 18080,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 30.0,
+        "p95": 45.0,
+        "p99": 52.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 16.935,
+          "p95": 40.491,
+          "p99": 48.266
+        },
+        "retrieval": {
+          "p50": 0.404,
+          "p95": 1.736,
+          "p99": 3.292
+        },
+        "ranking": {
+          "p50": 0.786,
+          "p95": 2.037,
+          "p99": 2.825
+        },
+        "total": {
+          "p50": 18.255,
+          "p95": 42.257,
+          "p99": 48.588
+        }
+      },
+      "sustained": false
+    },
+    {
+      "target_rps": 600,
+      "locust_users": 120,
+      "achieved_rps": 601.2,
+      "requests": 27120,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 31.0,
+        "p95": 60.0,
+        "p99": 68.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 21.099,
+          "p95": 47.226,
+          "p99": 61.517
+        },
+        "retrieval": {
+          "p50": 0.335,
+          "p95": 1.104,
+          "p99": 2.761
+        },
+        "ranking": {
+          "p50": 0.683,
+          "p95": 1.045,
+          "p99": 1.821
+        },
+        "total": {
+          "p50": 22.126,
+          "p95": 47.735,
+          "p99": 63.764
+        }
+      },
+      "sustained": false
+    }
+  ],
+  "note": "locust and the API (Docker Desktop VM) share the same machine",
+  "config": {
+    "seed": 42,
+    "paths": {
+      "raw_dir": "data/raw",
+      "processed_dir": "data/processed",
+      "split_dir": "data/split",
+      "results_dir": "results",
+      "artifacts_dir": "artifacts"
+    },
+    "data": {
+      "dataset": "ml-25m",
+      "url": "https://files.grouplens.org/datasets/movielens/ml-25m.zip",
+      "md5_url": "https://files.grouplens.org/datasets/movielens/ml-25m.zip.md5",
+      "keep_raw": false,
+      "positive_threshold": 4.0,
+      "sample_users": null
+    },
+    "split": {
+      "val_quantile": 0.9,
+      "test_quantile": 0.95
+    },
+    "eval": {
+      "retrieval_ks": [
+        50,
+        100,
+        200
+      ],
+      "ranking_k": 10,
+      "max_eval_users": null,
+      "batch_size": 2048
+    },
+    "baselines": {
+      "popularity_recent_days": 90,
+      "cooccurrence": {
+        "max_history": 200,
+        "top_neighbors": 200,
+        "shrinkage": 10.0,
+        "min_item_positives": 5
+      }
+    },
+    "two_tower": {
+      "emb_dim": 64,
+      "hidden": 256,
+      "dropout": 0.1,
+      "history_len": 50,
+      "batch_size": 4096,
+      "epochs": 5,
+      "lr": 0.001,
+      "weight_decay": 0.0,
+      "temperature": 0.05,
+      "logq_correction": true,
+      "use_genome": true,
+      "device": "auto",
+      "eval_users_per_epoch": 3000,
+      "benchmark_steps": null
+    },
+    "ann": {
+      "k": 100,
+      "hnsw_m": [
+        16,
+        32
+      ],
+      "ef_construction": 200,
+      "ef_search": [
+        32,
+        64,
+        128,
+        256
+      ],
+      "latency_queries": 2000,
+      "threads": 1
+    },
+    "ranker": {
+      "candidates": 100,
+      "history_len": 50,
+      "valid_frac": 0.2,
+      "num_boost_round": 2000,
+      "early_stopping_rounds": 100,
+      "params": {
+        "objective": "lambdarank",
+        "metric": "ndcg",
+        "eval_at": [
+          10
+        ],
+        "lambdarank_truncation_level": 20,
+        "learning_rate": 0.05,
+        "num_leaves": 31,
+        "min_data_in_leaf": 50,
+        "feature_fraction": 0.8,
+        "bagging_fraction": 0.8,
+        "bagging_freq": 1,
+        "deterministic": true,
+        "force_row_wise": true,
+        "verbose": -1
+      }
+    },
+    "serving": {
+      "candidates": 100,
+      "ann_m": 16,
+      "ef_construction": 200,
+      "ef_search": 128,
+      "max_search": 2048,
+      "filter_mode": "overfetch",
+      "cold_start_pool": 500,
+      "redis_url": "redis://localhost:6379/0",
+      "max_users": null
+    },
+    "probe": {
+      "url": "http://localhost:8000",
+      "requests": 1000,
+      "k": 10
+    },
+    "load_test": {
+      "label": "baseline",
+      "host": "http://localhost:8000",
+      "prometheus": "http://localhost:9090",
+      "target_rps": [
+        50,
+        100,
+        200,
+        400,
+        600,
+        800,
+        1000,
+        1200,
+        1500,
+        2000
+      ],
+      "per_user_rps": 5,
+      "step_seconds": 45,
+      "locust_processes": 4,
+      "n_user_ids": 50000,
+      "p99_budget_ms": 50,
+      "stop_after_failures": 2,
+      "prometheus_scrape_wait_s": 6
+    }
+  }
+}

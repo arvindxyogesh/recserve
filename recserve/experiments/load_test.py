@@ -174,10 +174,13 @@ def main() -> None:
             "label": label,
             "server": server,
             "docker": docker_info(),
+            "loadgen_cpus": sorted(os.sched_getaffinity(0))
+            if hasattr(os, "sched_getaffinity")
+            else None,
             "load_test_config": lcfg,
             "max_sustained_rps": best,
             "steps": steps,
-            "note": "locust and the API (Docker Desktop VM) share the same machine",
+            "note": lcfg["environment_note"],
         },
         cfg,
     )

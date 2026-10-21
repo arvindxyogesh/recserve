@@ -1,7 +1,7 @@
 CONFIG ?= configs/default.yaml
 PY ?= python
 
-.PHONY: install data split baselines cold-users two-tower ann ranker serving-artifacts up down probe load-test serving-quality test-serving smoke test lint format
+.PHONY: install data split baselines cold-users two-tower ann ranker serving-artifacts up down probe load-test load-test-host serving-quality test-serving smoke test lint format
 
 install:
 	$(PY) -m pip install -e ".[dev]"
@@ -45,8 +45,15 @@ down:
 probe:  ## M4: sequential latency probe against the running API
 	$(PY) -m recserve.experiments.serving_probe --config $(CONFIG)
 
-load-test:  ## M5: locust step load test against the running stack (LABEL=name)
-	$(PY) -m recserve.experiments.load_test --config $(CONFIG) --set load_test.label=$(or $(LABEL),baseline)
+load-test:  ## M5: locust step load test from the loadgen container (LABEL=name; stack must be up)
+	docker compose --profile loadtest build loadgen
+	docker compose --profile loadtest run --rm --no-deps loadgen \
+		--set paths.split_dir=/data/split --set paths.results_dir=/results \
+		--set load_test.host=http://api:8000 --set load_test.prometheus=http://prometheus:9090 \
+		--set load_test.label=$(or $(LABEL),baseline)
+
+load-test-host:  ## M5: same test with locust on the host (kept to show the measurement artefact)
+	$(PY) -m recserve.experiments.load_test --config $(CONFIG) --set load_test.label=$(or $(LABEL),host)
 
 serving-quality:  ## M5: quality + in-process cost of the serving path, in the container (ARGS=--set ...)
 	docker compose build api

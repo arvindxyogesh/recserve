@@ -1,5 +1,5 @@
 # Serving image: FastAPI + FAISS + LightGBM + numpy user tower. No torch.
-FROM python:3.11.10-slim
+FROM python:3.11.10-slim AS api
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -31,3 +31,9 @@ ENV RECSERVE_ARTIFACTS=/artifacts/serving/ml-25m \
 EXPOSE 8000
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["serve"]
+
+# Load generator for M5: the API image plus locust, run on the compose network.
+FROM api AS loadgen
+USER root
+RUN pip install "locust==2.46.7"
+USER app
