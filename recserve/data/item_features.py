@@ -21,17 +21,23 @@ class ItemFeatures:
     n_year_buckets: int
     genome: np.ndarray | None  # (n_items, n_tags) float32, zeros where missing
     has_genome: np.ndarray  # (n_items,) float32
+    year: np.ndarray | None = None  # (n_items,) float32 release year, NaN if unknown
 
     @property
     def n_items(self) -> int:
         return len(self.year_bucket)
 
 
-def year_bucket(title: str) -> int:
+def release_year(title: str) -> int | None:
     match = YEAR_RE.search(title.strip())
-    if not match:
+    return int(match.group(1)) if match else None
+
+
+def year_bucket(title: str) -> int:
+    year = release_year(title)
+    if year is None:
         return 0
-    year = min(max(int(match.group(1)), YEAR_MIN), YEAR_MAX)
+    year = min(max(year, YEAR_MIN), YEAR_MAX)
     return 1 + (year - YEAR_MIN) // YEAR_STEP
 
 
@@ -52,7 +58,9 @@ def build_item_features(
             if g:
                 genres[i, col[g]] = 1.0
 
-    years = np.array([year_bucket(t) for t in movies["title"].fillna("")], dtype=np.int64)
+    titles = movies["title"].fillna("")
+    years = np.array([year_bucket(t) for t in titles], dtype=np.int64)
+    year = np.array([release_year(t) or np.nan for t in titles], dtype=np.float32)
     n_buckets = 2 + (YEAR_MAX - YEAR_MIN) // YEAR_STEP
 
     has_genome = np.zeros(n_items, dtype=np.float32)
@@ -67,4 +75,4 @@ def build_item_features(
         ].to_numpy()
         has_genome[scores["item_idx"].unique()] = 1.0
 
-    return ItemFeatures(genres, names, years, n_buckets, genome, has_genome)
+    return ItemFeatures(genres, names, years, n_buckets, genome, has_genome, year)

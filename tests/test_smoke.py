@@ -18,6 +18,7 @@ def test_pipeline_end_to_end(tmp_path):
         "recserve.experiments.run_baselines",
         "recserve.retrieval.train_two_tower",
         "recserve.experiments.ann_benchmark",
+        "recserve.ranking.train_ranker",
     ):
         subprocess.run(
             [sys.executable, "-m", module, "--config", "configs/smoke.yaml", *overrides], check=True
@@ -50,3 +51,11 @@ def test_pipeline_end_to_end(tmp_path):
     assert flat["index"] == "flat (exact)"
     # exact FAISS search with seen-item filtering must reproduce the harness number
     assert flat["recall@50_test"] == pytest.approx(tt["test"]["result"]["metrics"]["recall@50"])
+
+    rk = json.loads((tmp_path / "results_dir" / "m3_ranker_synthetic.json").read_text())
+    assert {r["model"] for r in rk["results"]} >= {
+        "two_tower (retrieval order)",
+        "two_tower + lambdarank",
+    }
+    assert len(rk["feature_importance"]) == 19
+    assert (tmp_path / "artifacts_dir" / "ranker" / "synthetic" / "model.txt").exists()

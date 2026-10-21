@@ -59,3 +59,24 @@ ann:
   ef_search: [32, 64, 128, 256]
   latency_queries: 2000     # sampled warm test users, one query at a time
   threads: 1                # per-request latency is single-threaded
+
+ranker:
+  candidates: 100           # retrieved per user, then re-ranked
+  history_len: 50           # recent positives used for profile features
+  valid_frac: 0.2           # val users held out for early stopping
+  num_boost_round: 2000
+  early_stopping_rounds: 100
+  params:
+    objective: lambdarank
+    metric: ndcg
+    eval_at: [10]
+    lambdarank_truncation_level: 20
+    learning_rate: 0.05
+    num_leaves: 31
+    min_data_in_leaf: 50
+    feature_fraction: 0.8
+    bagging_fraction: 0.8
+    bagging_freq: 1
+    deterministic: true
+    force_row_wise: true
+    verbose: -1

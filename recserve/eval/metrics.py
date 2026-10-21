@@ -97,15 +97,41 @@ def metrics_from_hits(
         out[f"recall@{k}"] = float(np.mean(cum[:, k - 1] / n_relevant))
 
     k = ranking_k
+    per_user = per_user_ranking(hits, n_relevant, k)
+    out[f"recall@{k}"] = float(np.mean(cum[:, k - 1] / n_relevant))
+    for name, values in per_user.items():
+        out[f"{name}@{k}"] = float(np.mean(values))
+    return out
+
+
+def per_user_ranking(hits: np.ndarray, n_relevant: np.ndarray, k: int) -> dict[str, np.ndarray]:
+    """Per-user NDCG@k, reciprocal rank@k and hit@k (for paired tests between models)."""
+    n_relevant = np.asarray(n_relevant, dtype=np.float64)
     top = hits[:, :k]
     discounts = 1.0 / np.log2(np.arange(2, k + 2))
     dcg = top @ discounts
     ideal_len = np.minimum(n_relevant, k).astype(int)
     idcg = np.concatenate([[0.0], np.cumsum(discounts)])[ideal_len]
     first = np.argmax(top, axis=1)
-    rr = np.where(top.any(axis=1), 1.0 / (first + 1), 0.0)
-    out[f"recall@{k}"] = float(np.mean(cum[:, k - 1] / n_relevant))
-    out[f"ndcg@{k}"] = float(np.mean(dcg / idcg))
-    out[f"mrr@{k}"] = float(np.mean(rr))
-    out[f"hitrate@{k}"] = float(np.mean(top.any(axis=1)))
-    return out
+    return {
+        "ndcg": dcg / idcg,
+        "mrr": np.where(top.any(axis=1), 1.0 / (first + 1), 0.0),
+        "hitrate": top.any(axis=1).astype(np.float64),
+    }
+
+
+def paired_bootstrap_ci(
+    a: np.ndarray, b: np.ndarray, n_boot: int = 2000, alpha: float = 0.05, seed: int = 0
+) -> dict[str, float]:
+    """CI for mean(a) - mean(b) and relative lift, resampling users (paired)."""
+    rng = np.random.default_rng(seed)
+    idx = rng.integers(0, len(a), size=(n_boot, len(a)))
+    diff = a[idx].mean(axis=1) - b[idx].mean(axis=1)
+    lift = diff / b[idx].mean(axis=1)
+    lo, hi = 100 * alpha / 2, 100 * (1 - alpha / 2)
+    return {
+        "diff": float(a.mean() - b.mean()),
+        "diff_ci": [float(np.percentile(diff, lo)), float(np.percentile(diff, hi))],
+        "lift": float(a.mean() / b.mean() - 1),
+        "lift_ci": [float(np.percentile(lift, lo)), float(np.percentile(lift, hi))],
+    }

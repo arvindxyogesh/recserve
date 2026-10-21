@@ -58,3 +58,24 @@ ann:
   ef_search: [16, 64]
   latency_queries: 50
   threads: 1
+
+ranker:
+  candidates: 50
+  history_len: 50           # recent positives used for profile features
+  valid_frac: 0.2           # val users held out for early stopping
+  num_boost_round: 50
+  early_stopping_rounds: 10
+  params:
+    objective: lambdarank
+    metric: ndcg
+    eval_at: [10]
+    lambdarank_truncation_level: 20
+    learning_rate: 0.05
+    num_leaves: 31
+    min_data_in_leaf: 5
+    feature_fraction: 0.8
+    bagging_fraction: 0.8
+    bagging_freq: 1
+    deterministic: true
+    force_row_wise: true
+    verbose: -1
