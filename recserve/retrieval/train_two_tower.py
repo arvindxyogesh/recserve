@@ -257,6 +257,22 @@ def main() -> None:
         TwoTowerRecommender(model, tcfg["history_len"], device), val_ctx, rng=rng, **common
     )
     log.info("val (best epoch %d): %s", best_epoch, val_res)
+    art = Path(cfg["paths"].get("artifacts_dir", "artifacts")) / "two_tower" / tag
+    base_meta = {
+        "epochs": best_epoch,
+        "n_items": meta["n_items"],
+        "n_users": meta["n_users"],
+        **run_info,
+    }
+    # The val model (trained on train only) generates the ranker's training candidates in M3.
+    export(
+        model,
+        val_ctx,
+        tcfg["history_len"],
+        device,
+        art / "val",
+        {"period": "val", "trained_on": "train", **base_meta},
+    )
 
     t0 = time.perf_counter()
     model, test_curve, _ = train(feats, test_ctx, tcfg, device, rng, best_epoch)
@@ -266,21 +282,13 @@ def main() -> None:
     )
     log.info("test: %s", test_res)
 
-    art = Path(cfg["paths"].get("artifacts_dir", "artifacts")) / "two_tower" / tag
     export(
         model,
         test_ctx,
         tcfg["history_len"],
         device,
-        art,
-        {
-            "period": "test",
-            "trained_on": "train+val",
-            "epochs": best_epoch,
-            "n_items": meta["n_items"],
-            "n_users": meta["n_users"],
-            **run_info,
-        },
+        art / "test",
+        {"period": "test", "trained_on": "train+val", **base_meta},
     )
 
     n_params = sum(p.numel() for p in model.parameters())

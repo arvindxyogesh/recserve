@@ -55,7 +55,7 @@ def main() -> None:
     rng = set_seed(cfg["seed"])
     acfg = cfg["ann"]
     tag = run_tag(cfg)
-    art = Path(cfg["paths"]["artifacts_dir"]) / "two_tower" / tag
+    art = Path(cfg["paths"]["artifacts_dir"]) / "two_tower" / tag / "test"
     item_emb = np.load(art / "item_emb.npy")
     user_emb = np.load(art / "user_emb.npy")
     parts, meta = load_split(cfg["paths"]["split_dir"])
