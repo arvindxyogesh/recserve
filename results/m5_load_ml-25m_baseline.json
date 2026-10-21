@@ -1,0 +1,716 @@
+{
+  "created_utc": "2026-10-21T18:42:34+00:00",
+  "git_commit": null,
+  "config_path": "configs/default.yaml",
+  "config_hash": "366b612a61",
+  "seed": 42,
+  "hardware": {
+    "cpu": "aarch64",
+    "cpu_count": 10,
+    "ram_gb": 8.2,
+    "os": "Linux 6.11.11-linuxkit",
+    "python": "3.11.10"
+  },
+  "label": "baseline",
+  "server": {
+    "candidates": 100,
+    "filter_mode": "overfetch",
+    "ef_search": 128,
+    "workers": 4,
+    "cpus": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "docker": {},
+  "loadgen_cpus": [
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "load_test_config": {
+    "label": "baseline",
+    "host": "http://api:8000",
+    "prometheus": "http://prometheus:9090",
+    "target_rps": [
+      50,
+      100,
+      200,
+      400,
+      600,
+      800,
+      1000,
+      1200,
+      1500,
+      2000,
+      2500,
+      3000,
+      3500,
+      4000
+    ],
+    "per_user_rps": 20,
+    "step_seconds": 45,
+    "locust_processes": 4,
+    "n_user_ids": 50000,
+    "p99_budget_ms": 50,
+    "stop_after_failures": 2,
+    "prometheus_scrape_wait_s": 6,
+    "cooldown_s": 10,
+    "environment_note": "locust runs in the loadgen container on the compose network (no host port forwarding), pinned to Docker VM vCPUs 5-9; the API is pinned to vCPUs 0-3 and Redis to vCPU 4; all inside one Docker Desktop VM on the same host"
+  },
+  "max_sustained_rps": 3000,
+  "steps": [
+    {
+      "target_rps": 50,
+      "locust_users": 3,
+      "achieved_rps": 60.0,
+      "requests": 2699,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 6.0,
+        "p95": 8.0,
+        "p99": 11.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 0.675,
+          "p95": 1.488,
+          "p99": 1.994
+        },
+        "retrieval": {
+          "p50": 1.114,
+          "p95": 2.526,
+          "p99": 4.728
+        },
+        "ranking": {
+          "p50": 1.732,
+          "p95": 2.882,
+          "p99": 2.991
+        },
+        "total": {
+          "p50": 3.644,
+          "p95": 5.941,
+          "p99": 7.668
+        }
+      },
+      "valid": true,
+      "sustained": true
+    },
+    {
+      "target_rps": 100,
+      "locust_users": 5,
+      "achieved_rps": 99.9,
+      "requests": 4498,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 3.0,
+        "p95": 7.0,
+        "p99": 9.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 0.401,
+          "p95": 2.876,
+          "p99": 4.685
+        },
+        "retrieval": {
+          "p50": 0.722,
+          "p95": 1.943,
+          "p99": 4.225
+        },
+        "ranking": {
+          "p50": 1.339,
+          "p95": 1.945,
+          "p99": 1.999
+        },
+        "total": {
+          "p50": 2.507,
+          "p95": 5.313,
+          "p99": 7.301
+        }
+      },
+      "valid": true,
+      "sustained": true
+    },
+    {
+      "target_rps": 200,
+      "locust_users": 10,
+      "achieved_rps": 199.9,
+      "requests": 8998,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 5.0,
+        "p95": 11.0,
+        "p99": 14.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 1.856,
+          "p95": 7.798,
+          "p99": 10.835
+        },
+        "retrieval": {
+          "p50": 0.367,
+          "p95": 1.157,
+          "p99": 2.857
+        },
+        "ranking": {
+          "p50": 0.736,
+          "p95": 1.02,
+          "p99": 1.809
+        },
+        "total": {
+          "p50": 2.993,
+          "p95": 9.052,
+          "p99": 12.923
+        }
+      },
+      "valid": true,
+      "sustained": true
+    },
+    {
+      "target_rps": 400,
+      "locust_users": 20,
+      "achieved_rps": 399.7,
+      "requests": 17997,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 3.0,
+        "p95": 10.0,
+        "p99": 14.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 0.743,
+          "p95": 6.074,
+          "p99": 9.786
+        },
+        "retrieval": {
+          "p50": 0.304,
+          "p95": 0.952,
+          "p99": 2.53
+        },
+        "ranking": {
+          "p50": 0.663,
+          "p95": 0.969,
+          "p99": 0.996
+        },
+        "total": {
+          "p50": 1.757,
+          "p95": 7.014,
+          "p99": 11.394
+        }
+      },
+      "valid": true,
+      "sustained": true
+    },
+    {
+      "target_rps": 600,
+      "locust_users": 30,
+      "achieved_rps": 599.5,
+      "requests": 26999,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 5.0,
+        "p95": 11.0,
+        "p99": 15.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 1.81,
+          "p95": 8.375,
+          "p99": 12.682
+        },
+        "retrieval": {
+          "p50": 0.345,
+          "p95": 0.967,
+          "p99": 2.462
+        },
+        "ranking": {
+          "p50": 0.706,
+          "p95": 0.974,
+          "p99": 0.998
+        },
+        "total": {
+          "p50": 2.818,
+          "p95": 9.333,
+          "p99": 13.766
+        }
+      },
+      "valid": true,
+      "sustained": true
+    },
+    {
+      "target_rps": 800,
+      "locust_users": 40,
+      "achieved_rps": 799.4,
+      "requests": 36000,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 7.0,
+        "p95": 16.0,
+        "p99": 22.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 3.348,
+          "p95": 12.676,
+          "p99": 17.086
+        },
+        "retrieval": {
+          "p50": 0.255,
+          "p95": 0.9,
+          "p99": 2.121
+        },
+        "ranking": {
+          "p50": 0.486,
+          "p95": 0.955,
+          "p99": 0.997
+        },
+        "total": {
+          "p50": 4.243,
+          "p95": 13.387,
+          "p99": 18.125
+        }
+      },
+      "valid": true,
+      "sustained": true
+    },
+    {
+      "target_rps": 1000,
+      "locust_users": 50,
+      "achieved_rps": 998.9,
+      "requests": 44984,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 4.0,
+        "p95": 12.0,
+        "p99": 16.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 1.609,
+          "p95": 6.808,
+          "p99": 9.724
+        },
+        "retrieval": {
+          "p50": 0.219,
+          "p95": 0.833,
+          "p99": 1.937
+        },
+        "ranking": {
+          "p50": 0.391,
+          "p95": 0.897,
+          "p99": 0.982
+        },
+        "total": {
+          "p50": 2.339,
+          "p95": 7.315,
+          "p99": 10.651
+        }
+      },
+      "valid": true,
+      "sustained": true
+    },
+    {
+      "target_rps": 1200,
+      "locust_users": 60,
+      "achieved_rps": 1198.7,
+      "requests": 53971,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 3.0,
+        "p95": 12.0,
+        "p99": 19.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 0.784,
+          "p95": 7.909,
+          "p99": 14.073
+        },
+        "retrieval": {
+          "p50": 0.279,
+          "p95": 0.915,
+          "p99": 2.054
+        },
+        "ranking": {
+          "p50": 0.473,
+          "p95": 0.96,
+          "p99": 1.362
+        },
+        "total": {
+          "p50": 1.768,
+          "p95": 8.883,
+          "p99": 14.645
+        }
+      },
+      "valid": true,
+      "sustained": true
+    },
+    {
+      "target_rps": 1500,
+      "locust_users": 75,
+      "achieved_rps": 1497.7,
+      "requests": 67452,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 4.0,
+        "p95": 12.0,
+        "p99": 20.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 1.38,
+          "p95": 7.169,
+          "p99": 13.936
+        },
+        "retrieval": {
+          "p50": 0.237,
+          "p95": 0.874,
+          "p99": 1.97
+        },
+        "ranking": {
+          "p50": 0.411,
+          "p95": 0.936,
+          "p99": 1.261
+        },
+        "total": {
+          "p50": 2.077,
+          "p95": 8.05,
+          "p99": 14.648
+        }
+      },
+      "valid": true,
+      "sustained": true
+    },
+    {
+      "target_rps": 2000,
+      "locust_users": 100,
+      "achieved_rps": 1995.4,
+      "requests": 89861,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 2.0,
+        "p95": 9.0,
+        "p99": 23.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 0.182,
+          "p95": 2.819,
+          "p99": 6.844
+        },
+        "retrieval": {
+          "p50": 0.267,
+          "p95": 0.873,
+          "p99": 1.985
+        },
+        "ranking": {
+          "p50": 0.448,
+          "p95": 0.945,
+          "p99": 0.996
+        },
+        "total": {
+          "p50": 1.092,
+          "p95": 4.08,
+          "p99": 7.573
+        }
+      },
+      "valid": true,
+      "sustained": true
+    },
+    {
+      "target_rps": 2500,
+      "locust_users": 125,
+      "achieved_rps": 2496.8,
+      "requests": 112429,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 5.0,
+        "p95": 23.0,
+        "p99": 29.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 1.763,
+          "p95": 15.9,
+          "p99": 21.796
+        },
+        "retrieval": {
+          "p50": 0.195,
+          "p95": 0.827,
+          "p99": 1.941
+        },
+        "ranking": {
+          "p50": 0.377,
+          "p95": 0.866,
+          "p99": 0.977
+        },
+        "total": {
+          "p50": 2.548,
+          "p95": 16.695,
+          "p99": 23.956
+        }
+      },
+      "valid": true,
+      "sustained": true
+    },
+    {
+      "target_rps": 3000,
+      "locust_users": 150,
+      "achieved_rps": 2997.0,
+      "requests": 134994,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 10.0,
+        "p95": 24.0,
+        "p99": 37.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 4.56,
+          "p95": 14.558,
+          "p99": 23.4
+        },
+        "retrieval": {
+          "p50": 0.218,
+          "p95": 0.857,
+          "p99": 2.034
+        },
+        "ranking": {
+          "p50": 0.389,
+          "p95": 0.899,
+          "p99": 0.988
+        },
+        "total": {
+          "p50": 5.307,
+          "p95": 15.04,
+          "p99": 24.816
+        }
+      },
+      "valid": true,
+      "sustained": true
+    },
+    {
+      "target_rps": 3500,
+      "locust_users": 175,
+      "achieved_rps": 3475.0,
+      "requests": 156554,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 12.0,
+        "p95": 47.0,
+        "p99": 58.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 5.034,
+          "p95": 28.142,
+          "p99": 45.677
+        },
+        "retrieval": {
+          "p50": 0.275,
+          "p95": 0.908,
+          "p99": 2.229
+        },
+        "ranking": {
+          "p50": 0.509,
+          "p95": 0.956,
+          "p99": 0.996
+        },
+        "total": {
+          "p50": 5.965,
+          "p95": 28.789,
+          "p99": 46.238
+        }
+      },
+      "valid": true,
+      "sustained": false
+    },
+    {
+      "target_rps": 4000,
+      "locust_users": 200,
+      "achieved_rps": 3617.2,
+      "requests": 163009,
+      "failure_rate": 0.0,
+      "client_ms": {
+        "p50": 52.0,
+        "p95": 69.0,
+        "p99": 91.0
+      },
+      "server_ms": {
+        "feature_fetch": {
+          "p50": 23.715,
+          "p95": 49.574,
+          "p99": 70.285
+        },
+        "retrieval": {
+          "p50": 0.275,
+          "p95": 0.912,
+          "p99": 2.346
+        },
+        "ranking": {
+          "p50": 0.568,
+          "p95": 0.961,
+          "p99": 0.996
+        },
+        "total": {
+          "p50": 24.513,
+          "p95": 49.996,
+          "p99": 71.067
+        }
+      },
+      "valid": true,
+      "sustained": false
+    }
+  ],
+  "note": "locust runs in the loadgen container on the compose network (no host port forwarding), pinned to Docker VM vCPUs 5-9; the API is pinned to vCPUs 0-3 and Redis to vCPU 4; all inside one Docker Desktop VM on the same host",
+  "config": {
+    "seed": 42,
+    "paths": {
+      "raw_dir": "data/raw",
+      "processed_dir": "data/processed",
+      "split_dir": "/data/split",
+      "results_dir": "/results",
+      "artifacts_dir": "artifacts"
+    },
+    "data": {
+      "dataset": "ml-25m",
+      "url": "https://files.grouplens.org/datasets/movielens/ml-25m.zip",
+      "md5_url": "https://files.grouplens.org/datasets/movielens/ml-25m.zip.md5",
+      "keep_raw": false,
+      "positive_threshold": 4.0,
+      "sample_users": null
+    },
+    "split": {
+      "val_quantile": 0.9,
+      "test_quantile": 0.95
+    },
+    "eval": {
+      "retrieval_ks": [
+        50,
+        100,
+        200
+      ],
+      "ranking_k": 10,
+      "max_eval_users": null,
+      "batch_size": 2048
+    },
+    "baselines": {
+      "popularity_recent_days": 90,
+      "cooccurrence": {
+        "max_history": 200,
+        "top_neighbors": 200,
+        "shrinkage": 10.0,
+        "min_item_positives": 5
+      }
+    },
+    "two_tower": {
+      "emb_dim": 64,
+      "hidden": 256,
+      "dropout": 0.1,
+      "history_len": 50,
+      "batch_size": 4096,
+      "epochs": 5,
+      "lr": 0.001,
+      "weight_decay": 0.0,
+      "temperature": 0.05,
+      "logq_correction": true,
+      "use_genome": true,
+      "device": "auto",
+      "eval_users_per_epoch": 3000,
+      "benchmark_steps": null
+    },
+    "ann": {
+      "k": 100,
+      "hnsw_m": [
+        16,
+        32
+      ],
+      "ef_construction": 200,
+      "ef_search": [
+        32,
+        64,
+        128,
+        256
+      ],
+      "latency_queries": 2000,
+      "threads": 1
+    },
+    "ranker": {
+      "candidates": 100,
+      "history_len": 50,
+      "valid_frac": 0.2,
+      "num_boost_round": 2000,
+      "early_stopping_rounds": 100,
+      "params": {
+        "objective": "lambdarank",
+        "metric": "ndcg",
+        "eval_at": [
+          10
+        ],
+        "lambdarank_truncation_level": 20,
+        "learning_rate": 0.05,
+        "num_leaves": 31,
+        "min_data_in_leaf": 50,
+        "feature_fraction": 0.8,
+        "bagging_fraction": 0.8,
+        "bagging_freq": 1,
+        "deterministic": true,
+        "force_row_wise": true,
+        "verbose": -1
+      }
+    },
+    "serving": {
+      "candidates": 100,
+      "ann_m": 16,
+      "ef_construction": 200,
+      "ef_search": 128,
+      "max_search": 2048,
+      "filter_mode": "overfetch",
+      "cold_start_pool": 500,
+      "redis_url": "redis://localhost:6379/0",
+      "max_users": null
+    },
+    "probe": {
+      "url": "http://localhost:8000",
+      "requests": 1000,
+      "k": 10
+    },
+    "load_test": {
+      "label": "baseline",
+      "host": "http://api:8000",
+      "prometheus": "http://prometheus:9090",
+      "target_rps": [
+        50,
+        100,
+        200,
+        400,
+        600,
+        800,
+        1000,
+        1200,
+        1500,
+        2000,
+        2500,
+        3000,
+        3500,
+        4000
+      ],
+      "per_user_rps": 20,
+      "step_seconds": 45,
+      "locust_processes": 4,
+      "n_user_ids": 50000,
+      "p99_budget_ms": 50,
+      "stop_after_failures": 2,
+      "prometheus_scrape_wait_s": 6,
+      "cooldown_s": 10,
+      "environment_note": "locust runs in the loadgen container on the compose network (no host port forwarding), pinned to Docker VM vCPUs 5-9; the API is pinned to vCPUs 0-3 and Redis to vCPU 4; all inside one Docker Desktop VM on the same host"
+    }
+  }
+}

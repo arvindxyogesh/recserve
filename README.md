@@ -10,7 +10,7 @@ MovieLens 25M, with a 50 ms p99 latency budget. Work in progress; the full READM
 - [x] M2: two-tower retrieval and FAISS HNSW index
 - [x] M3: LightGBM LambdaRank ranker
 - [x] M4: FastAPI serving with Redis and Prometheus
-- [ ] M5: load test and optimisation
+- [x] M5: load test and optimisation
 - [ ] M6: simulated A/B test
 - [ ] M7: README and results
 
@@ -44,6 +44,23 @@ make test-serving        # API tests inside the Linux container
 Host ports can be changed with `API_PORT`, `REDIS_PORT`, `PROMETHEUS_PORT` and
 `GRAFANA_PORT` (for example `GRAFANA_PORT=3001 make up`). Grafana serves the
 provisioned `recserve` dashboard at `/d/recserve`.
+
+## Load test and optimisation (M5)
+
+```bash
+make up                                   # stack must be running
+make serving-quality ARGS="--set serving.filter_mode=overfetch"   # quality + cost per variant
+make load-test LABEL=baseline             # locust in the pinned loadgen container
+make summarize-m5                         # results/m5_summary_ml-25m.md
+```
+
+Locust runs in its own container on the compose network, pinned to different
+Docker VM vCPUs than the API (API 0-3, Redis 4, locust 5-9). Two earlier ways of
+running it are kept in `results/` because they distorted the numbers: locust on
+the macOS host (CPU contention with the VM plus Docker Desktop port forwarding),
+and many slow connections (5 req/s per locust user), which at the same total
+rate gave several times higher server-side latency than fewer busy connections
+(20 req/s per user, the configuration used for the reported numbers).
 
 On macOS the API runs only in Docker: the macOS wheels of faiss and lightgbm (and
 torch) each bundle their own OpenMP runtime, and loading two in one process aborts.

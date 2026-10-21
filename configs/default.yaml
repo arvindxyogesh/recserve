@@ -87,7 +87,7 @@ serving:
   ef_construction: 200
   ef_search: 128            # raised per query to cover over-fetch for seen items
   max_search: 2048          # cap on k + |seen| fetched from the index
-  filter_mode: overfetch    # overfetch | selector (see recserve/serving/recommender.py)
+  filter_mode: selector     # overfetch | selector; selector chosen in M5 (results/m5_summary_*.md)
   cold_start_pool: 500      # popular items kept per genre list
   redis_url: redis://localhost:6379/0
   max_users: null           # int to load only the first N users into Redis
