@@ -26,11 +26,19 @@ from recserve.utils import log, setup_logging, timed
 # Explicit column types keep memory low (int32 ids, float32 ratings) and make
 # the schema independent of pyarrow's type inference.
 SCHEMAS: dict[str, dict[str, pa.DataType]] = {
-    "ratings": {"userId": pa.int32(), "movieId": pa.int32(), "rating": pa.float32(),
-                "timestamp": pa.int64()},
+    "ratings": {
+        "userId": pa.int32(),
+        "movieId": pa.int32(),
+        "rating": pa.float32(),
+        "timestamp": pa.int64(),
+    },
     "movies": {"movieId": pa.int32(), "title": pa.string(), "genres": pa.string()},
-    "tags": {"userId": pa.int32(), "movieId": pa.int32(), "tag": pa.string(),
-             "timestamp": pa.int64()},
+    "tags": {
+        "userId": pa.int32(),
+        "movieId": pa.int32(),
+        "tag": pa.string(),
+        "timestamp": pa.int64(),
+    },
     "links": {"movieId": pa.int32(), "imdbId": pa.string(), "tmdbId": pa.float64()},
     "genome-scores": {"movieId": pa.int32(), "tagId": pa.int16(), "relevance": pa.float32()},
     "genome-tags": {"tagId": pa.int16(), "tag": pa.string()},
@@ -74,8 +82,7 @@ def convert(zip_path: Path, out_dir: Path) -> None:
         for stem, schema in SCHEMAS.items():
             dest = out_dir / f"{stem.replace('-', '_')}.parquet"
             with timed(f"convert {stem}"), zf.open(names[stem]) as f:
-                table = pacsv.read_csv(f, convert_options=pacsv.ConvertOptions(
-                    column_types=schema))
+                table = pacsv.read_csv(f, convert_options=pacsv.ConvertOptions(column_types=schema))
                 pq.write_table(table, dest, compression="zstd")
             log.info("%s: %d rows -> %s", stem, table.num_rows, dest)
 

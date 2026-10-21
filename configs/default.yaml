@@ -6,6 +6,7 @@ paths:
   processed_dir: data/processed
   split_dir: data/split
   results_dir: results
+  artifacts_dir: artifacts
 
 data:
   dataset: ml-25m
@@ -34,3 +35,19 @@ baselines:
     top_neighbors: 200        # neighbours kept per item
     shrinkage: 10.0           # cosine shrinkage for rarely co-occurring pairs
     min_item_positives: 5     # items with fewer train positives get no neighbour list
+
+two_tower:
+  emb_dim: 64
+  hidden: 256
+  dropout: 0.1
+  history_len: 50           # most recent positives fed to the user tower
+  batch_size: 4096          # also the number of in-batch negatives per example
+  epochs: 5                 # max; the val run picks the best epoch, the test run reuses it
+  lr: 0.001
+  weight_decay: 0.0
+  temperature: 0.05
+  logq_correction: true
+  use_genome: true
+  device: auto              # cuda > mps > cpu
+  eval_users_per_epoch: 3000
+  benchmark_steps: null     # int: time this many steps and exit

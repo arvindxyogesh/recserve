@@ -10,12 +10,13 @@ import pytest
 @pytest.mark.smoke
 def test_pipeline_end_to_end(tmp_path):
     overrides = []
-    for key in ("raw_dir", "processed_dir", "split_dir", "results_dir"):
+    for key in ("raw_dir", "processed_dir", "split_dir", "results_dir", "artifacts_dir"):
         overrides += ["--set", f"paths.{key}={tmp_path / key}"]
     for module in (
         "recserve.data.synthetic",
         "recserve.data.prepare",
         "recserve.experiments.run_baselines",
+        "recserve.retrieval.train_two_tower",
     ):
         subprocess.run(
             [sys.executable, "-m", module, "--config", "configs/smoke.yaml", *overrides], check=True
@@ -34,3 +35,10 @@ def test_pipeline_end_to_end(tmp_path):
         assert warm[(period, "cooccurrence")]["ndcg@10"] > warm[(period, "random")]["ndcg@10"]
         for value in warm[(period, "cooccurrence")].values():
             assert 0.0 <= value <= 1.0
+
+    tt = json.loads((tmp_path / "results_dir" / "m2_two_tower_synthetic.json").read_text())
+    assert 1 <= tt["best_epoch_on_val"] <= 2
+    assert tt["test"]["result"]["metrics"]["recall@50"] > warm[("test", "random")]["recall@50"]
+    art = tmp_path / "artifacts_dir" / "two_tower" / "synthetic"
+    for name in ("item_emb.npy", "user_emb.npy", "user_has_history.npy", "model.pt"):
+        assert (art / name).exists()

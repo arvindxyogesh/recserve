@@ -51,9 +51,7 @@ def build_interactions(
         keep = rng.choice(users, size=min(sample_users, len(users)), replace=False)
         ratings = ratings[ratings["userId"].isin(keep)]
 
-    item_map = (
-        movies[["movieId"]].drop_duplicates().sort_values("movieId").reset_index(drop=True)
-    )
+    item_map = movies[["movieId"]].drop_duplicates().sort_values("movieId").reset_index(drop=True)
     item_map["item_idx"] = np.arange(len(item_map), dtype=np.int32)
     user_map = pd.DataFrame({"userId": np.sort(ratings["userId"].unique())})
     user_map["user_idx"] = np.arange(len(user_map), dtype=np.int32)
@@ -61,13 +59,15 @@ def build_interactions(
     df = ratings.merge(user_map, on="userId").merge(item_map, on="movieId")
     if len(df) != len(ratings):
         raise ValueError(f"{len(ratings) - len(df)} ratings reference unknown movies")
-    out = pd.DataFrame({
-        "user_idx": df["user_idx"].astype(np.int32),
-        "item_idx": df["item_idx"].astype(np.int32),
-        "rating": df["rating"].astype(np.float32),
-        "ts": df["timestamp"].astype(np.int64),
-        "label": (df["rating"] >= positive_threshold).astype(np.int8),
-    })
+    out = pd.DataFrame(
+        {
+            "user_idx": df["user_idx"].astype(np.int32),
+            "item_idx": df["item_idx"].astype(np.int32),
+            "rating": df["rating"].astype(np.float32),
+            "ts": df["timestamp"].astype(np.int64),
+            "label": (df["rating"] >= positive_threshold).astype(np.int8),
+        }
+    )
     out = out.sort_values(["ts", "user_idx", "item_idx"], kind="stable").reset_index(drop=True)
     return out, user_map, item_map
 
@@ -77,16 +77,19 @@ def temporal_split(
 ) -> tuple[dict[str, pd.DataFrame], dict[str, int]]:
     if not 0 < val_quantile < test_quantile < 1:
         raise ValueError("need 0 < val_quantile < test_quantile < 1")
-    t_val, t_test = (int(x) for x in np.quantile(df["ts"].to_numpy(), [val_quantile,
-                                                                       test_quantile]))
+    t_val, t_test = (
+        int(x) for x in np.quantile(df["ts"].to_numpy(), [val_quantile, test_quantile])
+    )
     ts = df["ts"]
     parts = {
         "train": df[ts < t_val],
         "val": df[(ts >= t_val) & (ts < t_test)],
         "test": df[ts >= t_test],
     }
-    return {k: v.reset_index(drop=True) for k, v in parts.items()}, {"t_val": t_val,
-                                                                    "t_test": t_test}
+    return {k: v.reset_index(drop=True) for k, v in parts.items()}, {
+        "t_val": t_val,
+        "t_test": t_test,
+    }
 
 
 def split_stats(parts: dict[str, pd.DataFrame], cutoffs: dict[str, int]) -> dict[str, Any]:
@@ -97,8 +100,9 @@ def split_stats(parts: dict[str, pd.DataFrame], cutoffs: dict[str, int]) -> dict
     they also have at least one positive inside it.
     """
     stats: dict[str, Any] = {
-        "cutoffs": {k: {"unix": v, "utc": str(pd.Timestamp(v, unit="s"))}
-                    for k, v in cutoffs.items()},
+        "cutoffs": {
+            k: {"unix": v, "utc": str(pd.Timestamp(v, unit="s"))} for k, v in cutoffs.items()
+        },
         "time_range_utc": {
             "start": str(pd.Timestamp(int(parts["train"]["ts"].min()), unit="s")),
             "end": str(pd.Timestamp(int(parts["test"]["ts"].max()), unit="s")),
@@ -164,8 +168,11 @@ def main() -> None:
         **stats,
     }
     (split_dir / "split_meta.json").write_text(json.dumps(meta, indent=2) + "\n")
-    write_result(Path(cfg["paths"]["results_dir"]) / f"data_split_{run_tag(cfg)}.json",
-                 {"split": meta, "timings_s": timings}, cfg)
+    write_result(
+        Path(cfg["paths"]["results_dir"]) / f"data_split_{run_tag(cfg)}.json",
+        {"split": meta, "timings_s": timings},
+        cfg,
+    )
     log.info("split summary:\n%s", json.dumps(meta, indent=2))
 
 

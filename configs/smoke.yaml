@@ -6,6 +6,7 @@ paths:
   processed_dir: data/smoke/processed
   split_dir: data/smoke/split
   results_dir: data/smoke/results
+  artifacts_dir: data/smoke/artifacts
 
 data:
   dataset: synthetic
@@ -33,3 +34,19 @@ baselines:
     top_neighbors: 50
     shrinkage: 10.0
     min_item_positives: 2
+
+two_tower:
+  emb_dim: 16
+  hidden: 32
+  dropout: 0.0
+  history_len: 10
+  batch_size: 256
+  epochs: 2
+  lr: 0.005
+  weight_decay: 0.0
+  temperature: 0.1
+  logq_correction: true
+  use_genome: true
+  device: cpu
+  eval_users_per_epoch: 100
+  benchmark_steps: null
