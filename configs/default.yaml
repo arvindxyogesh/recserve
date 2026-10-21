@@ -51,3 +51,11 @@ two_tower:
   device: auto              # cuda > mps > cpu
   eval_users_per_epoch: 3000
   benchmark_steps: null     # int: time this many steps and exit
+
+ann:
+  k: 100                    # candidates retrieved per request
+  hnsw_m: [16, 32]          # graph degree
+  ef_construction: 200
+  ef_search: [32, 64, 128, 256]
+  latency_queries: 2000     # sampled warm test users, one query at a time
+  threads: 1                # per-request latency is single-threaded

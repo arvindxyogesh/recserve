@@ -23,6 +23,8 @@ jobs:
           ruff check .
           ruff format --check .
       - name: Unit tests
-        run: pytest -q -m "not smoke"
+        run: |
+          pytest -q -m "not smoke" --ignore=tests/faiss
+          pytest -q tests/faiss
       - name: End-to-end smoke test (synthetic data)
-        run: pytest -q -m smoke
+        run: pytest -q -m smoke --ignore=tests/faiss

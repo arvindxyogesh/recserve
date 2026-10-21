@@ -17,6 +17,7 @@ def test_pipeline_end_to_end(tmp_path):
         "recserve.data.prepare",
         "recserve.experiments.run_baselines",
         "recserve.retrieval.train_two_tower",
+        "recserve.experiments.ann_benchmark",
     ):
         subprocess.run(
             [sys.executable, "-m", module, "--config", "configs/smoke.yaml", *overrides], check=True
@@ -42,3 +43,9 @@ def test_pipeline_end_to_end(tmp_path):
     art = tmp_path / "artifacts_dir" / "two_tower" / "synthetic"
     for name in ("item_emb.npy", "user_emb.npy", "user_has_history.npy", "model.pt"):
         assert (art / name).exists()
+
+    ann = json.loads((tmp_path / "results_dir" / "m2_ann_synthetic.json").read_text())
+    flat = ann["results"][0]
+    assert flat["index"] == "flat (exact)"
+    # exact FAISS search with seen-item filtering must reproduce the harness number
+    assert flat["recall@50_test"] == pytest.approx(tt["test"]["result"]["metrics"]["recall@50"])

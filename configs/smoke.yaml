@@ -50,3 +50,11 @@ two_tower:
   device: cpu
   eval_users_per_epoch: 100
   benchmark_steps: null
+
+ann:
+  k: 50
+  hnsw_m: [8]
+  ef_construction: 200
+  ef_search: [16, 64]
+  latency_queries: 50
+  threads: 1

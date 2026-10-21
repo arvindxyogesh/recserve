@@ -32,4 +32,6 @@ select = ["E", "F", "I", "B", "UP", "SIM"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-markers = ["smoke: end-to-end pipeline test on synthetic data"]
+markers = [
+    "smoke: end-to-end pipeline test on synthetic data",
+]

@@ -8,6 +8,7 @@ import os
 import platform
 import random
 import subprocess
+import sys
 import time
 from collections.abc import Iterator
 from contextlib import contextmanager, suppress
@@ -29,12 +30,11 @@ def setup_logging() -> None:
 def set_seed(seed: int) -> np.random.Generator:
     random.seed(seed)
     np.random.seed(seed)
-    try:  # torch is only installed from M2 onwards
-        import torch
-
+    # Seed torch only if this process already uses it. Importing it here would
+    # load its OpenMP runtime next to faiss's, which aborts on macOS.
+    torch = sys.modules.get("torch")
+    if torch is not None:
         torch.manual_seed(seed)
-    except ImportError:
-        pass
     return np.random.default_rng(seed)
 
 

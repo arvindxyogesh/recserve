@@ -1,0 +1,40 @@
+{
+  "created_utc": "2026-10-21T05:29:04+00:00",
+  "git_commit": "76333d4",
+  "config_path": "configs/default.yaml",
+  "config_hash": "31051096cf",
+  "seed": 42,
+  "hardware": {
+    "cpu": "Apple M4",
+    "cpu_count": 10,
+    "ram_gb": 17.2,
+    "os": "Darwin 25.5.0",
+    "python": "3.11.17"
+  },
+  "device": "mps",
+  "torch": "2.14.1",
+  "two_tower_config": {
+    "emb_dim": 64,
+    "hidden": 256,
+    "dropout": 0.1,
+    "history_len": 50,
+    "batch_size": 4096,
+    "epochs": 5,
+    "lr": 0.001,
+    "weight_decay": 0.0,
+    "temperature": 0.05,
+    "logq_correction": true,
+    "use_genome": true,
+    "device": "mps",
+    "eval_users_per_epoch": 3000,
+    "benchmark_steps": 300
+  },
+  "train_examples_period": "val",
+  "timing": {
+    "epoch": 1,
+    "loss": 7.838156952857971,
+    "steps": 300,
+    "epoch_s": 16.36,
+    "steps_per_s": 18.34
+  }
+}
