@@ -30,6 +30,7 @@ from recserve.data.item_features import ItemFeatures, build_item_features
 from recserve.data.prepare import load_split
 from recserve.eval.harness import EvalContext, evaluate
 from recserve.experiments.run_baselines import build_contexts
+from recserve.retrieval.export_user_tower import export_user_tower
 from recserve.retrieval.two_tower import (
     Sequences,
     TwoTower,
@@ -206,6 +207,7 @@ def export(
     np.save(out_dir / "user_emb.npy", user_emb)
     np.save(out_dir / "user_has_history.npy", has_hist)
     torch.save(model.state_dict(), out_dir / "model.pt")
+    export_user_tower(model.eval(), out_dir / "user_tower.npz")
     (out_dir / "meta.json").write_text(json.dumps(meta, indent=2) + "\n")
     log.info("exported %s", out_dir)
 

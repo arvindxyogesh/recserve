@@ -91,14 +91,27 @@ def item_stats(
 class PairFeaturizer:
     """Builds user profiles from recent positives and scores candidates against them."""
 
-    def __init__(self, feats: ItemFeatures) -> None:
-        self.genres = feats.genres
-        self.n_genres_item = np.maximum(feats.genres.sum(axis=1), 1.0)
-        self.year = feats.year if feats.year is not None else np.full(feats.n_items, np.nan)
-        self.has_genome = feats.has_genome.astype(bool)
+    def __init__(
+        self,
+        genres: np.ndarray,
+        year: np.ndarray,
+        has_genome: np.ndarray,
+        genome_unit: np.ndarray,
+    ) -> None:
+        """genome_unit: L2-normalised genome rows (zeros where missing); may be memory-mapped."""
+        self.genres = genres
+        self.n_genres_item = np.maximum(genres.sum(axis=1), 1.0)
+        self.year = year
+        self.has_genome = has_genome.astype(bool)
+        self.genome_unit = genome_unit
+
+    @classmethod
+    def from_item_features(cls, feats: ItemFeatures) -> PairFeaturizer:
         g = feats.genome if feats.genome is not None else np.zeros((feats.n_items, 1), np.float32)
         norms = np.linalg.norm(g, axis=1, keepdims=True)
-        self.genome_unit = np.divide(g, norms, out=np.zeros_like(g), where=norms > 0)
+        unit = np.divide(g, norms, out=np.zeros_like(g), where=norms > 0)
+        year = feats.year if feats.year is not None else np.full(feats.n_items, np.nan)
+        return cls(feats.genres, year.astype(np.float32), feats.has_genome, unit)
 
     def __call__(
         self,

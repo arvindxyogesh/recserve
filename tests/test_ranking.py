@@ -72,7 +72,7 @@ def test_item_stats_windows():
 
 
 def test_pair_features():
-    pf = PairFeaturizer(feats())
+    pf = PairFeaturizer.from_item_features(feats())
     recent = np.array([[PAD, 0, 2]])  # items 0 (genre a, genome [1,0]) and 2 (a+b, [1,1])
     cand = np.array([[1, 3]])
     out = pf(recent, cand, np.array([[0.9, 0.5]]))

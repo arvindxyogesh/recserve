@@ -79,3 +79,18 @@ ranker:
     deterministic: true
     force_row_wise: true
     verbose: -1
+
+serving:
+  candidates: 50
+  ann_m: 16                 # chosen in M2: 98% overlap with exact at efSearch 128
+  ef_construction: 200
+  ef_search: 128            # raised per query to cover over-fetch for seen items
+  max_search: 2048          # cap on k + |seen| fetched from the index
+  cold_start_pool: 500      # popular items kept per genre list
+  redis_url: redis://localhost:6379/0
+  max_users: null           # int to load only the first N users into Redis
+
+probe:
+  url: http://localhost:8000
+  requests: 1000
+  k: 10

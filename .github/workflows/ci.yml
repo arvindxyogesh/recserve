@@ -17,14 +17,17 @@ jobs:
       - name: Install
         run: |
           pip install torch --index-url https://download.pytorch.org/whl/cpu
-          pip install -e ".[dev,train]"
+          pip install -e ".[dev,train,serve]"
       - name: Lint
         run: |
           ruff check .
           ruff format --check .
       - name: Unit tests
         run: |
-          pytest -q -m "not smoke" --ignore=tests/faiss
+          pytest -q -m "not smoke" --ignore=tests/faiss --ignore=tests/serving
           pytest -q tests/faiss
+          pytest -q tests/serving
       - name: End-to-end smoke test (synthetic data)
-        run: pytest -q -m smoke --ignore=tests/faiss
+        run: pytest -q -m smoke --ignore=tests/faiss --ignore=tests/serving
+      - name: Build serving image
+        run: docker build -t recserve-api .

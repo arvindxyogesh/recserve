@@ -19,6 +19,7 @@ def test_pipeline_end_to_end(tmp_path):
         "recserve.retrieval.train_two_tower",
         "recserve.experiments.ann_benchmark",
         "recserve.ranking.train_ranker",
+        "recserve.serving.build_artifacts",
     ):
         subprocess.run(
             [sys.executable, "-m", module, "--config", "configs/smoke.yaml", *overrides], check=True
@@ -59,3 +60,6 @@ def test_pipeline_end_to_end(tmp_path):
     }
     assert len(rk["feature_importance"]) == 19
     assert (tmp_path / "artifacts_dir" / "ranker" / "synthetic" / "model.txt").exists()
+    serving = tmp_path / "artifacts_dir" / "serving" / "synthetic"
+    for name in ("items.hnsw", "user_tower.npz", "ranker.txt", "genome_unit.npy", "meta.json"):
+        assert (serving / name).exists()

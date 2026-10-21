@@ -1,7 +1,7 @@
 CONFIG ?= configs/default.yaml
 PY ?= python
 
-.PHONY: install data split baselines cold-users two-tower ann ranker smoke test lint format
+.PHONY: install data split baselines cold-users two-tower ann ranker serving-artifacts up down probe test-serving smoke test lint format
 
 install:
 	$(PY) -m pip install -e ".[dev]"
@@ -27,9 +27,28 @@ ranker:  ## M3: LightGBM LambdaRank over two-tower candidates
 smoke:  ## whole pipeline on synthetic data
 	$(PY) -m pytest -q -m smoke
 
-test:  ## torch and faiss tests run in separate processes (duplicate libomp on macOS)
-	$(PY) -m pytest -q --ignore=tests/faiss
+test:  ## torch, faiss and serving tests run in separate processes (duplicate libomp on macOS)
+	$(PY) -m pytest -q --ignore=tests/faiss --ignore=tests/serving
 	$(PY) -m pytest -q tests/faiss
+	@if [ "$$(uname)" = Darwin ]; then echo "tests/serving: run 'make test-serving' (Linux container) on macOS"; \
+	else $(PY) -m pytest -q tests/serving; fi
+
+serving-artifacts:  ## M4: package index, user tower, ranker and item tables for the API
+	$(PY) -m recserve.serving.build_artifacts --config $(CONFIG)
+
+up:  ## M4: build and start redis, loader, api, prometheus, grafana
+	docker compose up -d --build
+
+down:
+	docker compose down
+
+probe:  ## M4: sequential latency probe against the running API
+	$(PY) -m recserve.experiments.serving_probe --config $(CONFIG)
+
+test-serving:  ## serving tests inside the Linux container (needed on macOS); rebuilds the image first
+	docker compose build api
+	docker compose run --rm --no-deps -v "$(CURDIR)/tests:/app/tests:ro" --entrypoint sh api \
+		-c "mkdir -p \$$PROMETHEUS_MULTIPROC_DIR && pip install --user -q pytest httpx fakeredis && python -m pytest -q -p no:cacheprovider tests/serving"
 
 lint:
 	ruff check .

@@ -147,7 +147,7 @@ def main() -> None:
     parts, meta = load_split(split_dir)
     item_map = pd.read_parquet(split_dir / "item_map.parquet")
     feats = build_item_features(cfg["paths"]["processed_dir"], item_map, use_genome=True)
-    pair = PairFeaturizer(feats)
+    pair = PairFeaturizer.from_item_features(feats)
     val_ctx, test_ctx = build_contexts(parts, meta)
 
     timings: dict[str, float] = {}

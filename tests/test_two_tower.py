@@ -106,3 +106,18 @@ def test_training_reduces_loss():
         opt.step()
         losses.append(loss.item())
     assert losses[-1] < losses[0]
+
+
+def test_numpy_user_tower_matches_torch(tmp_path):
+    from recserve.retrieval.export_user_tower import export_user_tower
+    from recserve.serving.user_tower import NumpyUserTower
+
+    torch.manual_seed(0)
+    model = TwoTower(tiny_features(n_items=10), emb_dim=8, hidden=16, dropout=0.3).eval()
+    export_user_tower(model, tmp_path / "ut.npz")
+    tower = NumpyUserTower(tmp_path / "ut.npz")
+    hist_np = np.array([[-1, -1, 3], [1, 2, 4], [-1, -1, -1]])
+    hist_t = torch.from_numpy(np.where(hist_np < 0, model.pad, hist_np))
+    with torch.no_grad():
+        expected = model.user_embed(hist_t).numpy()
+    np.testing.assert_allclose(tower.embed(hist_np), expected, atol=1e-5)
