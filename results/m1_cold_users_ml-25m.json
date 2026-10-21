@@ -1,0 +1,46 @@
+{
+  "created_utc": "2026-10-21T05:14:17+00:00",
+  "git_commit": "c02a0ea",
+  "config_path": "configs/default.yaml",
+  "config_hash": "837e5f319d",
+  "seed": 42,
+  "hardware": {
+    "cpu": "Apple M4",
+    "cpu_count": 10,
+    "ram_gb": 17.2,
+    "os": "Darwin 25.5.0",
+    "python": "3.11.17"
+  },
+  "first_window_s": 3600,
+  "top_n": 100,
+  "results": {
+    "val": {
+      "cold": {
+        "users": 6009,
+        "median_ratings_in_period": 79.0,
+        "share_ratings_in_first_hour": 0.5874,
+        "share_positives_in_history_top100": 0.2277
+      },
+      "warm": {
+        "users": 5449,
+        "median_ratings_in_period": 26.0,
+        "share_ratings_in_first_hour": 0.2675,
+        "share_positives_in_history_top100": 0.0797
+      }
+    },
+    "test": {
+      "cold": {
+        "users": 5942,
+        "median_ratings_in_period": 78.0,
+        "share_ratings_in_first_hour": 0.6008,
+        "share_positives_in_history_top100": 0.2268
+      },
+      "warm": {
+        "users": 4727,
+        "median_ratings_in_period": 22.0,
+        "share_ratings_in_first_hour": 0.2948,
+        "share_positives_in_history_top100": 0.0807
+      }
+    }
+  }
+}
