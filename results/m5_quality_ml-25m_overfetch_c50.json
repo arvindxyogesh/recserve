@@ -1,8 +1,8 @@
 {
-  "created_utc": "2026-10-21T16:42:22+00:00",
-  "git_commit": null,
+  "created_utc": "2026-10-21T19:17:39+00:00",
+  "git_commit": "8b93aa6",
   "config_path": "configs/default.yaml",
-  "config_hash": "d7c9023d5d",
+  "config_hash": "5a1466028f",
   "seed": 42,
   "hardware": {
     "cpu": "aarch64",
@@ -28,22 +28,22 @@
   },
   "in_process_ms": {
     "retrieval": {
-      "p50": 0.3136,
-      "p95": 2.5872,
-      "p99": 3.5626,
-      "mean": 0.6353
+      "p50": 0.3162,
+      "p95": 2.645,
+      "p99": 3.6836,
+      "mean": 0.6417
     },
     "ranking": {
-      "p50": 0.2948,
-      "p95": 0.3458,
-      "p99": 0.4941,
-      "mean": 0.3027
+      "p50": 0.2959,
+      "p95": 0.3366,
+      "p99": 0.4109,
+      "mean": 0.2997
     },
     "total": {
-      "p50": 0.617,
-      "p95": 2.9112,
-      "p99": 3.8903,
-      "mean": 0.938
+      "p50": 0.6154,
+      "p95": 2.9507,
+      "p99": 3.992,
+      "mean": 0.9415
     }
   },
   "short_candidate_lists": 0,
@@ -173,15 +173,27 @@
         1000,
         1200,
         1500,
-        2000
+        2000,
+        2500,
+        3000
       ],
-      "per_user_rps": 5,
+      "per_user_rps": 20,
       "step_seconds": 45,
       "locust_processes": 4,
       "n_user_ids": 50000,
       "p99_budget_ms": 50,
       "stop_after_failures": 2,
-      "prometheus_scrape_wait_s": 6
+      "prometheus_scrape_wait_s": 6,
+      "cooldown_s": 10,
+      "environment_note": "locust runs in the loadgen container on the compose network (no host port forwarding), pinned to Docker VM vCPUs 5-9; the API is pinned to vCPUs 0-3 and Redis to vCPU 4; all inside one Docker Desktop VM on the same host"
+    },
+    "ab_test": {
+      "k": 10,
+      "alpha": 0.05,
+      "power": 0.8,
+      "mde_relative": 0.1,
+      "salt": "recserve-m6",
+      "aa_replications": 1000
     }
   }
 }

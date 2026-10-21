@@ -11,7 +11,7 @@ MovieLens 25M, with a 50 ms p99 latency budget. Work in progress; the full READM
 - [x] M3: LightGBM LambdaRank ranker
 - [x] M4: FastAPI serving with Redis and Prometheus
 - [x] M5: load test and optimisation
-- [ ] M6: simulated A/B test
+- [x] M6: simulated A/B test
 - [ ] M7: README and results
 
 ## Quick start
@@ -61,6 +61,27 @@ the macOS host (CPU contention with the VM plus Docker Desktop port forwarding),
 and many slow connections (5 req/s per locust user), which at the same total
 rate gave several times higher server-side latency than fewer busy connections
 (20 req/s per user, the configuration used for the reported numbers).
+
+## Simulated A/B test (M6)
+
+> **This is an offline simulation, not a live experiment.** No user saw these
+> recommendations. Held-out test-period ratings stand in for clicks, so there is
+> no position bias, no presentation effect and no feedback loop, and MovieLens
+> ratings were themselves shaped by the recommender MovieLens ran at the time.
+
+```bash
+make ab-test     # in the serving container -> results/m6_ab_ml-25m.json
+```
+
+Users with a test-period positive are split 50/50 by a salted SHA-256 of their
+userId. Control gets 90-day popularity; treatment gets exactly what the API
+returns (`TwoStageRecommender.serve`: two-stage for users with history,
+popularity for cold users). A user "clicks" if any of their top 10 is one of
+their held-out positives. Power is pre-registered on the val period, analysis
+uses the two-proportion z-test and Beta-Binomial model vendored from
+[ab-testing-framework](https://github.com/arvindxyogesh/ab-testing-framework)
+(`recserve/experiments/abtest_vendored.py`), with an SRM check and 1,000 A/A
+re-splits to check calibration.
 
 On macOS the API runs only in Docker: the macOS wheels of faiss and lightgbm (and
 torch) each bundle their own OpenMP runtime, and loading two in one process aborts.

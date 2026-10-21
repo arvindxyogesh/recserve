@@ -1,0 +1,353 @@
+{
+  "created_utc": "2026-10-21T19:17:04+00:00",
+  "git_commit": "8b93aa6",
+  "config_path": "configs/default.yaml",
+  "config_hash": "a837c47bf6",
+  "seed": 42,
+  "hardware": {
+    "cpu": "aarch64",
+    "cpu_count": 10,
+    "ram_gb": 8.2,
+    "os": "Linux 6.11.11-linuxkit",
+    "python": "3.11.10"
+  },
+  "disclaimer": "offline simulation on held-out ratings, not a live experiment",
+  "click_definition": "any of top-10 recommendations is a held-out test positive",
+  "pre_registration": {
+    "period": "val",
+    "mde_relative": 0.1,
+    "power": 0.8,
+    "alpha": 0.05,
+    "segments": {
+      "overall": {
+        "control_rate": 0.6904346308256241,
+        "users": 11458,
+        "mde_abs": 0.06904346308256241,
+        "n_per_arm_required": 656
+      },
+      "warm": {
+        "control_rate": 0.45366122224261335,
+        "users": 5449,
+        "mde_abs": 0.04536612222426134,
+        "n_per_arm_required": 1902
+      },
+      "cold": {
+        "control_rate": 0.9051422865701447,
+        "users": 6009,
+        "mde_abs": 0.09051422865701447,
+        "n_per_arm_required": 90
+      }
+    }
+  },
+  "population": {
+    "users": 10669,
+    "control": 5351,
+    "treatment": 5318,
+    "srm_chi2": 0.10207142187646452,
+    "srm_p_value": 0.7493578663269318,
+    "salt": "recserve-m6"
+  },
+  "achieved_power": {
+    "overall": {
+      "n_per_arm": 5318,
+      "power_for_mde": 0.999999999089931
+    },
+    "warm": {
+      "n_per_arm": 2362,
+      "power_for_mde": 0.8773026021297815
+    },
+    "cold": {
+      "n_per_arm": 2956,
+      "power_for_mde": 1.0
+    }
+  },
+  "short_lists": {
+    "control": 0,
+    "treatment": 0
+  },
+  "results": {
+    "overall": {
+      "control": {
+        "n": 5351,
+        "clicks": 3597,
+        "rate": 0.6722108017193048
+      },
+      "treatment": {
+        "n": 5318,
+        "clicks": 3968,
+        "rate": 0.7461451673561489
+      },
+      "abs_diff": 0.07393436563684408,
+      "abs_diff_ci95": [
+        0.0567586333878837,
+        0.09111009788580446
+      ],
+      "z": 8.406873798578582,
+      "p_value": 0.0,
+      "p_value_precise": 4.210837435720941e-17,
+      "significant": true,
+      "rel_lift": 0.10998687531908602,
+      "rel_lift_ci": [
+        0.08322061102275224,
+        0.1374145311150745
+      ],
+      "bayes_prob_treatment_better": 1.0,
+      "bayes_expected_rel_lift": 0.11013679534244157,
+      "bayes_abs_diff_interval95": [
+        0.056878194051487516,
+        0.09110476051486228
+      ],
+      "bayes_rel_lift_interval95": [
+        0.0835081498540304,
+        0.13749418150472348
+      ]
+    },
+    "warm": {
+      "control": {
+        "n": 2365,
+        "clicks": 854,
+        "rate": 0.36109936575052853
+      },
+      "treatment": {
+        "n": 2362,
+        "clicks": 1235,
+        "rate": 0.5228619813717189
+      },
+      "abs_diff": 0.16176261562119038,
+      "abs_diff_ci95": [
+        0.1338256277459987,
+        0.18969960349638204
+      ],
+      "z": 11.197468911048357,
+      "p_value": 0.0,
+      "p_value_precise": 4.195494160894403e-29,
+      "significant": true,
+      "rel_lift": 0.4479725830727346,
+      "rel_lift_ci": [
+        0.35547093818499276,
+        0.5467868342037319
+      ],
+      "bayes_prob_treatment_better": 1.0,
+      "bayes_expected_rel_lift": 0.44836778869478583,
+      "bayes_abs_diff_interval95": [
+        0.13365941410516521,
+        0.18953799291653953
+      ],
+      "bayes_rel_lift_interval95": [
+        0.35585201018154683,
+        0.5470609717354574
+      ]
+    },
+    "cold": {
+      "control": {
+        "n": 2986,
+        "clicks": 2743,
+        "rate": 0.9186202277294039
+      },
+      "treatment": {
+        "n": 2956,
+        "clicks": 2733,
+        "rate": 0.9245602165087957
+      },
+      "abs_diff": 0.005939988779391836,
+      "abs_diff_ci95": [
+        -0.007728069726356947,
+        0.01960804728514062
+      ],
+      "z": 0.851577908970707,
+      "p_value": 0.39444840496201206,
+      "p_value_precise": 0.39444840496201194,
+      "significant": false,
+      "rel_lift": 0.006466207253103873,
+      "rel_lift_ci": [
+        -0.008352130986056916,
+        0.021505978074365162
+      ],
+      "bayes_prob_treatment_better": 0.8021,
+      "bayes_expected_rel_lift": 0.006485768440080039,
+      "bayes_abs_diff_interval95": [
+        -0.00780918657095761,
+        0.019658639910672782
+      ],
+      "bayes_rel_lift_interval95": [
+        -0.008450927283405643,
+        0.021573216716628787
+      ]
+    }
+  },
+  "aa_test": {
+    "replications": 1000,
+    "false_positive_rate": 0.044,
+    "expected": 0.05
+  },
+  "paired_reference": {
+    "overall": {
+      "control_rate": 0.6737276220826695,
+      "treatment_rate": 0.7442122035804668,
+      "n": 10669
+    },
+    "warm": {
+      "control_rate": 0.36217474085043366,
+      "treatment_rate": 0.5212608419716522,
+      "n": 4727
+    },
+    "cold": {
+      "control_rate": 0.9215752271962302,
+      "treatment_rate": 0.9215752271962302,
+      "n": 5942
+    }
+  },
+  "serving": {
+    "filter_mode": "selector",
+    "candidates": 100
+  },
+  "config": {
+    "seed": 42,
+    "paths": {
+      "raw_dir": "data/raw",
+      "processed_dir": "data/processed",
+      "split_dir": "/data/split",
+      "results_dir": "/results",
+      "artifacts_dir": "/artifacts"
+    },
+    "data": {
+      "dataset": "ml-25m",
+      "url": "https://files.grouplens.org/datasets/movielens/ml-25m.zip",
+      "md5_url": "https://files.grouplens.org/datasets/movielens/ml-25m.zip.md5",
+      "keep_raw": false,
+      "positive_threshold": 4.0,
+      "sample_users": null
+    },
+    "split": {
+      "val_quantile": 0.9,
+      "test_quantile": 0.95
+    },
+    "eval": {
+      "retrieval_ks": [
+        50,
+        100,
+        200
+      ],
+      "ranking_k": 10,
+      "max_eval_users": null,
+      "batch_size": 2048
+    },
+    "baselines": {
+      "popularity_recent_days": 90,
+      "cooccurrence": {
+        "max_history": 200,
+        "top_neighbors": 200,
+        "shrinkage": 10.0,
+        "min_item_positives": 5
+      }
+    },
+    "two_tower": {
+      "emb_dim": 64,
+      "hidden": 256,
+      "dropout": 0.1,
+      "history_len": 50,
+      "batch_size": 4096,
+      "epochs": 5,
+      "lr": 0.001,
+      "weight_decay": 0.0,
+      "temperature": 0.05,
+      "logq_correction": true,
+      "use_genome": true,
+      "device": "auto",
+      "eval_users_per_epoch": 3000,
+      "benchmark_steps": null
+    },
+    "ann": {
+      "k": 100,
+      "hnsw_m": [
+        16,
+        32
+      ],
+      "ef_construction": 200,
+      "ef_search": [
+        32,
+        64,
+        128,
+        256
+      ],
+      "latency_queries": 2000,
+      "threads": 1
+    },
+    "ranker": {
+      "candidates": 100,
+      "history_len": 50,
+      "valid_frac": 0.2,
+      "num_boost_round": 2000,
+      "early_stopping_rounds": 100,
+      "params": {
+        "objective": "lambdarank",
+        "metric": "ndcg",
+        "eval_at": [
+          10
+        ],
+        "lambdarank_truncation_level": 20,
+        "learning_rate": 0.05,
+        "num_leaves": 31,
+        "min_data_in_leaf": 50,
+        "feature_fraction": 0.8,
+        "bagging_fraction": 0.8,
+        "bagging_freq": 1,
+        "deterministic": true,
+        "force_row_wise": true,
+        "verbose": -1
+      }
+    },
+    "serving": {
+      "candidates": 100,
+      "ann_m": 16,
+      "ef_construction": 200,
+      "ef_search": 128,
+      "max_search": 2048,
+      "filter_mode": "selector",
+      "cold_start_pool": 500,
+      "redis_url": "redis://localhost:6379/0",
+      "max_users": null
+    },
+    "probe": {
+      "url": "http://localhost:8000",
+      "requests": 1000,
+      "k": 10
+    },
+    "load_test": {
+      "label": "baseline",
+      "host": "http://localhost:8000",
+      "prometheus": "http://localhost:9090",
+      "target_rps": [
+        50,
+        100,
+        200,
+        400,
+        600,
+        800,
+        1000,
+        1200,
+        1500,
+        2000,
+        2500,
+        3000
+      ],
+      "per_user_rps": 20,
+      "step_seconds": 45,
+      "locust_processes": 4,
+      "n_user_ids": 50000,
+      "p99_budget_ms": 50,
+      "stop_after_failures": 2,
+      "prometheus_scrape_wait_s": 6,
+      "cooldown_s": 10,
+      "environment_note": "locust runs in the loadgen container on the compose network (no host port forwarding), pinned to Docker VM vCPUs 5-9; the API is pinned to vCPUs 0-3 and Redis to vCPU 4; all inside one Docker Desktop VM on the same host"
+    },
+    "ab_test": {
+      "k": 10,
+      "alpha": 0.05,
+      "power": 0.8,
+      "mde_relative": 0.1,
+      "salt": "recserve-m6",
+      "aa_replications": 1000
+    }
+  }
+}
