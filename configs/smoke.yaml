@@ -116,3 +116,11 @@ load_test:
     locust runs in the loadgen container on the compose network (no host port
     forwarding), pinned to Docker VM vCPUs 5-9; the API is pinned to vCPUs 0-3
     and Redis to vCPU 4; all inside one Docker Desktop VM on the same host
+
+ab_test:
+  k: 10                     # recommendations shown; a click = any of them is a held-out positive
+  alpha: 0.05
+  power: 0.8
+  mde_relative: 0.10        # pre-registered minimum detectable effect: +10% relative
+  salt: recserve-m6         # assignment hash salt
+  aa_replications: 1000

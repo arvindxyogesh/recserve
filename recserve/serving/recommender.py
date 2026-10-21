@@ -152,6 +152,15 @@ class TwoStageRecommender:
             timings_s={"retrieval": t1 - t0, "ranking": t2 - t1},
         )
 
+    def serve(
+        self, record: UserRecord | None, k: int, genres: list[str] | None = None
+    ) -> Recommendation:
+        """What the API returns: two-stage for users with positive history,
+        otherwise popularity (by genre if given), excluding anything already rated."""
+        if record is not None and len(record.recent):
+            return self.recommend(record, k)
+        return self.cold_start(k, genres, None if record is None else record.seen)
+
     def cold_start(
         self, k: int, genres: list[str] | None = None, seen: np.ndarray | None = None
     ) -> Recommendation:

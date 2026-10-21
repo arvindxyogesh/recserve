@@ -141,10 +141,7 @@ async def recommend(
     record = decode(await state["redis"].hgetall(KEY.format(user_id)))
     fetch_s = time.perf_counter() - t0
 
-    if record is not None and len(record.recent):
-        result = rec.recommend(record, k)
-    else:
-        result = rec.cold_start(k, genre_list, None if record is None else record.seen)
+    result = rec.serve(record, k, genre_list)
     total_s = time.perf_counter() - t0
 
     STAGE_SECONDS.labels("feature_fetch").observe(fetch_s)

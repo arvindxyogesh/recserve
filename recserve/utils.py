@@ -74,6 +74,9 @@ def hardware_info() -> dict[str, Any]:
 
 
 def git_commit() -> str | None:
+    # Containers have no git checkout; the Makefile passes the hash in.
+    if os.environ.get("RECSERVE_GIT_COMMIT"):
+        return os.environ["RECSERVE_GIT_COMMIT"]
     try:
         return subprocess.check_output(
             ["git", "rev-parse", "--short", "HEAD"], text=True, stderr=subprocess.DEVNULL

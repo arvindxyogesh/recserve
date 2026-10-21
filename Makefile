@@ -1,7 +1,8 @@
 CONFIG ?= configs/default.yaml
+GIT_COMMIT := $(shell git rev-parse --short HEAD 2>/dev/null)
 PY ?= python
 
-.PHONY: install data split baselines cold-users two-tower ann ranker serving-artifacts up down probe load-test summarize-m5 load-test-host serving-quality test-serving smoke test lint format
+.PHONY: install data split baselines cold-users two-tower ann ranker serving-artifacts up down probe load-test summarize-m5 load-test-host serving-quality ab-test test-serving smoke test lint format
 
 install:
 	$(PY) -m pip install -e ".[dev]"
@@ -47,7 +48,7 @@ probe:  ## M4: sequential latency probe against the running API
 
 load-test:  ## M5: locust step load test from the loadgen container (LABEL=name; stack must be up)
 	docker compose --profile loadtest build loadgen
-	docker compose --profile loadtest run --rm --no-deps loadgen \
+	docker compose --profile loadtest run --rm --no-deps -e RECSERVE_GIT_COMMIT=$(GIT_COMMIT) loadgen \
 		--set paths.split_dir=/data/split --set paths.results_dir=/results \
 		--set load_test.host=http://api:8000 --set load_test.prometheus=http://prometheus:9090 \
 		--set load_test.label=$(or $(LABEL),baseline)
@@ -60,10 +61,20 @@ load-test-host:  ## M5: same test with locust on the host (kept to show the meas
 
 serving-quality:  ## M5: quality + in-process cost of the serving path, in the container (ARGS=--set ...)
 	docker compose build api
-	docker compose run --rm --no-deps -v "$(CURDIR)/data/split:/data/split:ro" \
+	docker compose run --rm --no-deps -e RECSERVE_GIT_COMMIT=$(GIT_COMMIT) \
+		-v "$(CURDIR)/data/split:/data/split:ro" \
 		-v "$(CURDIR)/results:/results" --entrypoint python api \
 		-m recserve.experiments.serving_quality --set paths.split_dir=/data/split \
 		--set paths.artifacts_dir=/artifacts --set paths.results_dir=/results $(ARGS)
+
+ab-test:  ## M6: simulated A/B test (popularity vs two-stage) in the serving container
+	docker compose build api
+	docker compose run --rm --no-deps -e RECSERVE_GIT_COMMIT=$(GIT_COMMIT) \
+		-v "$(CURDIR)/data/split:/data/split:ro" \
+		-v "$(CURDIR)/results:/results" -v "$(CURDIR)/artifacts/ab:/artifacts/ab" \
+		--entrypoint python api -m recserve.experiments.ab_simulation \
+		--set paths.split_dir=/data/split --set paths.artifacts_dir=/artifacts \
+		--set paths.results_dir=/results $(ARGS)
 
 test-serving:  ## serving tests inside the Linux container (needed on macOS); rebuilds the image first
 	docker compose build api
