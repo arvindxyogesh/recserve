@@ -19,6 +19,7 @@ import csv
 import json
 import math
 import os
+import signal
 import subprocess
 import sys
 import tempfile
@@ -97,13 +98,35 @@ def run_step(rps: int, lcfg: dict[str, Any], env: dict[str, str], out_dir: Path)
         "5",
     ]
     t_start = time.time()
-    subprocess.run(cmd, env=env, check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    t_end = time.time()
-    with open(f"{prefix}_stats.csv") as f:
+    # Hard timeout: under overload a multi-process locust run can fail to stop at -t.
+    proc = subprocess.Popen(
+        cmd,
+        env=env,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        start_new_session=True,
+    )
+    try:
+        proc.wait(timeout=lcfg["step_seconds"] + 60)
+        timed_out = False
+    except subprocess.TimeoutExpired:
+        os.killpg(proc.pid, signal.SIGKILL)
+        proc.wait()
+        timed_out = True
+    stats_file = Path(f"{prefix}_stats.csv")
+    if timed_out or not stats_file.exists():
+        log.warning("step %d rps did not finish cleanly; marked invalid", rps)
+        time.sleep(lcfg["cooldown_s"])
+        return {"target_rps": rps, "locust_users": users, "valid": False}
+    with open(stats_file) as f:
         agg = next(r for r in csv.DictReader(f) if r["Name"] == "Aggregated")
     n_req, n_fail = int(agg["Request Count"]), int(agg["Failure Count"])
     time.sleep(lcfg["prometheus_scrape_wait_s"])  # let the last scrape land
-    window = max(int(t_end - t_start) - 2, 10)
+    # Server-side window = the planned step, never however long locust took to exit.
+    window_end = t_start + lcfg["step_seconds"]
+    window = lcfg["step_seconds"] - 5
+    server = prom_quantiles(lcfg["prometheus"], window, window_end)
+    time.sleep(lcfg["cooldown_s"])
     return {
         "target_rps": rps,
         "locust_users": users,
@@ -111,7 +134,8 @@ def run_step(rps: int, lcfg: dict[str, Any], env: dict[str, str], out_dir: Path)
         "requests": n_req,
         "failure_rate": n_fail / max(n_req, 1),
         "client_ms": {"p50": float(agg["50%"]), "p95": float(agg["95%"]), "p99": float(agg["99%"])},
-        "server_ms": prom_quantiles(lcfg["prometheus"], window, t_end),
+        "server_ms": server,
+        "valid": True,
     }
 
 
@@ -138,7 +162,8 @@ def main() -> None:
     for rps in lcfg["target_rps"]:
         step = run_step(rps, lcfg, env, work)
         step["sustained"] = (
-            step["achieved_rps"] >= 0.95 * rps
+            step["valid"]
+            and step["achieved_rps"] >= 0.95 * rps
             and step["client_ms"]["p99"] <= lcfg["p99_budget_ms"]
             and step["failure_rate"] < 0.001
         )
@@ -159,6 +184,9 @@ def main() -> None:
     )
     lines = [header, "|" + "---|" * 11]
     for s in steps:
+        if not s["valid"]:
+            lines.append(f"| {s['target_rps']} | invalid: locust did not stop |" + " |" * 9)
+            continue
         sv = s["server_ms"]
         lines.append(
             f"| {s['target_rps']} | {s['achieved_rps']} | {s['client_ms']['p50']:.0f} "

@@ -24,6 +24,9 @@ K = int(os.environ.get("RECSERVE_K", "10"))
 
 class RecommendUser(FastHttpUser):
     wait_time = constant_throughput(PER_USER_RPS)
+    # Requests slower than this count as failures instead of stalling the user.
+    network_timeout = 5.0
+    connection_timeout = 5.0
 
     def on_start(self) -> None:
         # Random phase within one period: without it the users fire in lockstep

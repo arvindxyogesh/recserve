@@ -111,6 +111,7 @@ load_test:
   p99_budget_ms: 50
   stop_after_failures: 2     # stop after this many unsustained steps
   prometheus_scrape_wait_s: 6
+  cooldown_s: 10             # idle time between steps so queues drain
   environment_note: >-
     locust runs in the loadgen container on the compose network (no host port
     forwarding), pinned to Docker VM vCPUs 5-9; the API is pinned to vCPUs 0-3
