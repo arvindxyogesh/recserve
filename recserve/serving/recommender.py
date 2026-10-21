@@ -23,6 +23,7 @@ from recserve.serving.store import UserRecord
 from recserve.serving.user_tower import NumpyUserTower
 
 POP_90D = ITEM_STATS.index("i_pop_90d")
+FILTER_MODES = ("overfetch", "selector")
 
 
 @dataclass
@@ -44,11 +45,21 @@ def right_align(recent: np.ndarray, length: int) -> np.ndarray:
 
 
 class TwoStageRecommender:
-    def __init__(self, art_dir: str | Path, threads: int = 1) -> None:
+    def __init__(
+        self,
+        art_dir: str | Path,
+        threads: int = 1,
+        candidates: int | None = None,
+        filter_mode: str | None = None,
+    ) -> None:
+        """candidates and filter_mode override the values packaged in meta.json."""
         art = Path(art_dir)
         meta = json.loads((art / "meta.json").read_text())
         scfg = meta["serving_config"]
-        self.n_candidates = scfg["candidates"]
+        self.n_candidates = candidates or scfg["candidates"]
+        self.filter_mode = filter_mode or scfg.get("filter_mode", "overfetch")
+        if self.filter_mode not in FILTER_MODES:
+            raise ValueError(f"filter_mode must be one of {FILTER_MODES}")
         self.ef_search = scfg["ef_search"]
         self.max_search = scfg["max_search"]
         self.tower_len = meta["two_tower_history_len"]
@@ -91,18 +102,30 @@ class TwoStageRecommender:
         self.recommend(dummy, 10)
 
     def retrieve(self, record: UserRecord) -> tuple[np.ndarray, np.ndarray]:
-        """Top candidates by inner product, with already-rated items filtered out.
+        """Top candidates by inner product, with already-rated items removed.
 
-        Over-fetches by the number of seen items (capped) so filtering still
-        leaves enough candidates; efSearch is passed per query, which is
-        thread-safe, instead of being set on the shared index.
+        filter_mode "overfetch": search k + |seen| (capped at max_search, with
+        efSearch raised to match) and drop seen items afterwards. Exact, but
+        heavy users with thousands of ratings force very deep searches.
+        filter_mode "selector": pass the seen items to FAISS as an ID selector so
+        HNSW skips them during the search; k and efSearch stay fixed.
+        Search parameters are passed per query (thread-safe), never set on the
+        shared index.
         """
         query = self.tower.embed(right_align(record.recent, self.tower_len))
-        k_search = min(self.n_candidates + len(record.seen), self.max_search, self.index.ntotal)
         params = faiss.SearchParametersHNSW()
-        params.efSearch = max(self.ef_search, k_search)
-        scores, ids = self.index.search(query, k_search, params=params)
-        keep = (ids[0] >= 0) & ~np.isin(ids[0], record.seen)
+        if self.filter_mode == "selector" and len(record.seen):
+            k_search = min(self.n_candidates, self.index.ntotal)
+            params.efSearch = max(self.ef_search, k_search)
+            batch = faiss.IDSelectorBatch(record.seen)
+            params.sel = faiss.IDSelectorNot(batch)
+            scores, ids = self.index.search(query, k_search, params=params)
+            keep = ids[0] >= 0
+        else:
+            k_search = min(self.n_candidates + len(record.seen), self.max_search, self.index.ntotal)
+            params.efSearch = max(self.ef_search, k_search)
+            scores, ids = self.index.search(query, k_search, params=params)
+            keep = (ids[0] >= 0) & ~np.isin(ids[0], record.seen)
         return ids[0][keep][: self.n_candidates], scores[0][keep][: self.n_candidates]
 
     def rank(self, record: UserRecord, items: np.ndarray, scores: np.ndarray) -> np.ndarray:

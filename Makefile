@@ -1,7 +1,7 @@
 CONFIG ?= configs/default.yaml
 PY ?= python
 
-.PHONY: install data split baselines cold-users two-tower ann ranker serving-artifacts up down probe test-serving smoke test lint format
+.PHONY: install data split baselines cold-users two-tower ann ranker serving-artifacts up down probe load-test serving-quality test-serving smoke test lint format
 
 install:
 	$(PY) -m pip install -e ".[dev]"
@@ -44,6 +44,16 @@ down:
 
 probe:  ## M4: sequential latency probe against the running API
 	$(PY) -m recserve.experiments.serving_probe --config $(CONFIG)
+
+load-test:  ## M5: locust step load test against the running stack (LABEL=name)
+	$(PY) -m recserve.experiments.load_test --config $(CONFIG) --set load_test.label=$(or $(LABEL),baseline)
+
+serving-quality:  ## M5: quality + in-process cost of the serving path, in the container (ARGS=--set ...)
+	docker compose build api
+	docker compose run --rm --no-deps -v "$(CURDIR)/data/split:/data/split:ro" \
+		-v "$(CURDIR)/results:/results" --entrypoint python api \
+		-m recserve.experiments.serving_quality --set paths.split_dir=/data/split \
+		--set paths.artifacts_dir=/artifacts --set paths.results_dir=/results $(ARGS)
 
 test-serving:  ## serving tests inside the Linux container (needed on macOS); rebuilds the image first
 	docker compose build api

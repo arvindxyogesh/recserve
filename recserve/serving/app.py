@@ -66,7 +66,13 @@ state: dict[str, Any] = {}
 async def lifespan(app: FastAPI):
     # Tests inject a recommender and a fake Redis before startup.
     if "rec" not in state:
-        state["rec"] = TwoStageRecommender(ART_DIR)
+        state["rec"] = TwoStageRecommender(
+            ART_DIR,
+            candidates=int(os.environ["RECSERVE_CANDIDATES"])
+            if os.environ.get("RECSERVE_CANDIDATES")
+            else None,
+            filter_mode=os.environ.get("RECSERVE_FILTER") or None,
+        )
         state["rec"].warmup()
     if "redis" not in state:
         state["redis"] = aioredis.from_url(REDIS_URL)
@@ -81,6 +87,18 @@ app = FastAPI(title="recserve", lifespan=lifespan)
 async def healthz() -> dict[str, str]:
     """Liveness: the process is up and serving HTTP."""
     return {"status": "ok"}
+
+
+@app.get("/info")
+async def info() -> dict[str, Any]:
+    """Active serving configuration (useful when comparing load-test runs)."""
+    rec: TwoStageRecommender = state["rec"]
+    return {
+        "candidates": rec.n_candidates,
+        "filter_mode": rec.filter_mode,
+        "ef_search": rec.ef_search,
+        "workers": int(os.environ.get("WEB_CONCURRENCY", "1")),
+    }
 
 
 @app.get("/readyz")

@@ -28,6 +28,8 @@ services:
       RECSERVE_ARTIFACTS: /artifacts/serving/ml-25m
       REDIS_URL: redis://redis:6379/0
       WEB_CONCURRENCY: ${WEB_CONCURRENCY:-4}
+      RECSERVE_CANDIDATES: ${RECSERVE_CANDIDATES:-}
+      RECSERVE_FILTER: ${RECSERVE_FILTER:-}
     volumes:
       - ./artifacts/serving:/artifacts/serving:ro
     ports: ["${API_PORT:-8000}:8000"]
